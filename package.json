@@ -1,0 +1,17 @@
+{
+  "name": "trato",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev public --ip 127.0.0.1 --port 8788 --log-level=info",
+    "deploy": "wrangler pages deploy public"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "serve": "^14.2.6",
+    "wrangler": "^4.150.0"
+  }
+}
