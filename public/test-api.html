@@ -23,8 +23,13 @@
       cursor: pointer;
       font-weight: 600;
       margin-right: 8px;
+      margin-bottom: 8px;
     }
     button:hover { background: #0B6B50; }
+    button.secondary {
+      background: #CE1126;
+    }
+    button.secondary:hover { background: #E63946; }
     pre {
       background: #061B15;
       color: #D8F7E8;
@@ -33,15 +38,34 @@
       overflow-x: auto;
       font-size: 0.85rem;
       line-height: 1.5;
+      min-height: 40px;
     }
     .ok { color: #10B981; }
     .err { color: #CE1126; }
+    .info {
+      background: #EFFBF5;
+      border: 1px solid #C0E5D2;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: #0B2A20;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
   <h1>🧪 TRATO — Test API</h1>
 
+  <div class="info">
+    <strong>Utilisateur de test actuel :</strong> <code>carlos1792111274171@test.com</code><br>
+    Mot de passe : <code>motdepasse123</code>
+  </div>
+
   <h2>1. Inscription</h2>
+  <p style="font-size:0.85rem;color:#60756C;margin:0 0 8px">
+    ⚠️ Échouera avec "email déjà utilisé" car cet utilisateur existe déjà. Change l'email dans le code pour tester une nouvelle inscription.
+  </p>
   <button onclick="testRegister()">Tester l'inscription</button>
   <pre id="registerOut">Clique pour tester…</pre>
 
@@ -53,56 +77,78 @@
   <button onclick="testDB()">Tester la connexion D1</button>
   <pre id="dbOut">Clique pour tester…</pre>
 
+  <h2>4. Voir les utilisateurs</h2>
+  <button onclick="testUsers()">Lister tous les utilisateurs</button>
+  <pre id="usersOut">Clique pour tester…</pre>
+
   <script>
+    // Email de test partagé par les deux boutons
+    const TEST_EMAIL = 'carlos1792111274171@test.com';
+    const TEST_PASSWORD = 'motdepasse123';
+    const TEST_PHONE = '5512345678';
+    const TEST_NAME = 'Carlos Test';
+
     async function testRegister(){
       const out = document.getElementById('registerOut');
-      out.textContent = 'Envoi en cours…';
+      out.textContent = '⏳ Envoi en cours…';
       try {
         const r = await fetch('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name: 'Carlos Test',
-            email: 'carlos' + Date.now() + '@test.com',
-            phone: '5512345678',
-            password: 'motdepasse123'
+            name: TEST_NAME,
+            email: TEST_EMAIL,
+            phone: TEST_PHONE,
+            password: TEST_PASSWORD
           })
         });
         const data = await r.json();
         out.textContent = (r.ok ? '✅ ' : '❌ ') + JSON.stringify(data, null, 2);
       } catch (err){
-        out.textContent = '❌ Erreur : ' + err.message;
+        out.textContent = '❌ Erreur réseau : ' + err.message;
       }
     }
 
     async function testLogin(){
       const out = document.getElementById('loginOut');
-      out.textContent = 'Envoi en cours…';
+      out.textContent = '⏳ Envoi en cours…';
       try {
         const r = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email: 'carlos@test.com',
-            password: 'motdepasse123'
+            email: TEST_EMAIL,
+            password: TEST_PASSWORD
           })
         });
         const data = await r.json();
         out.textContent = (r.ok ? '✅ ' : '❌ ') + JSON.stringify(data, null, 2);
       } catch (err){
-        out.textContent = '❌ Erreur : ' + err.message;
+        out.textContent = '❌ Erreur réseau : ' + err.message;
       }
     }
 
     async function testDB(){
       const out = document.getElementById('dbOut');
-      out.textContent = 'Envoi en cours…';
+      out.textContent = '⏳ Envoi en cours…';
       try {
         const r = await fetch('/api/db-test');
         const data = await r.json();
         out.textContent = (r.ok ? '✅ ' : '❌ ') + JSON.stringify(data, null, 2);
       } catch (err){
-        out.textContent = '❌ Erreur : ' + err.message;
+        out.textContent = '❌ Erreur réseau : ' + err.message;
+      }
+    }
+
+    async function testUsers(){
+      const out = document.getElementById('usersOut');
+      out.textContent = '⏳ Envoi en cours…';
+      try {
+        const r = await fetch('/api/users-list');
+        const data = await r.json();
+        out.textContent = (r.ok ? '✅ ' : '❌ ') + JSON.stringify(data, null, 2);
+      } catch (err){
+        out.textContent = '❌ Erreur réseau : ' + err.message;
       }
     }
   </script>
