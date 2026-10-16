@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>TRATO — Test API</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: #F6FAF8;
+      color: #061B15;
+    }
+    h1 { font-size: 1.5rem; margin-bottom: 20px; }
+    h2 { font-size: 1.1rem; margin: 24px 0 10px; }
+    button {
+      background: #064E3B;
+      color: #fff;
+      border: 0;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-right: 8px;
+    }
+    button:hover { background: #0B6B50; }
+    pre {
+      background: #061B15;
+      color: #D8F7E8;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .ok { color: #10B981; }
+    .err { color: #CE1126; }
+  </style>
+</head>
+<body>
+  <h1>🧪 TRATO — Test API</h1>
+
+  <h2>1. Inscription</h2>
+  <button onclick="testRegister()">Tester l'inscription</button>
+  <pre id="registerOut">Clique pour tester…</pre>
+
+  <h2>2. Connexion</h2>
+  <button onclick="testLogin()">Tester la connexion</button>
+  <pre id="loginOut">Clique pour tester…</pre>
+
+  <h2>3. Base de données</h2>
+  <button onclick="testDB()">Tester la connexion D1</button>
+  <pre id="dbOut">Clique pour tester…</pre>
+
+  <script>
+    async function testRegister(){
+      const out = document.getElementById('registerOut');
+      out.textContent = 'Envoi en cours…';
+      try {
+        const r = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'Carlos Test',
+            email: 'carlos' + Date.now() + '@test.com',
+            phone: '5512345678',
+            password: 'motdepasse123'
+          })
+        });
+        const data = await r.json();
+        out.textContent = (r.ok ? '✅ ' : '❌ ') + JSON.stringify(data, null, 2);
+      } catch (err){
+        out.textContent = '❌ Erreur : ' + err.message;
+      }
+    }
+
+    async function testLogin(){
+      const out = document.getElementById('loginOut');
+      out.textContent = 'Envoi en cours…';
+      try {
+        const r = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: 'carlos@test.com',
+            password: 'motdepasse123'
+          })
+        });
+        const data = await r.json();
+        out.textContent = (r.ok ? '✅ ' : '❌ ') + JSON.stringify(data, null, 2);
+      } catch (err){
+        out.textContent = '❌ Erreur : ' + err.message;
+      }
+    }
+
+    async function testDB(){
+      const out = document.getElementById('dbOut');
+      out.textContent = 'Envoi en cours…';
+      try {
+        const r = await fetch('/api/db-test');
+        const data = await r.json();
+        out.textContent = (r.ok ? '✅ ' : '❌ ') + JSON.stringify(data, null, 2);
+      } catch (err){
+        out.textContent = '❌ Erreur : ' + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
