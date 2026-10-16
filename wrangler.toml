@@ -6,3 +6,6 @@ pages_build_output_dir = "public"
 binding = "DB"
 database_name = "trato-db"
 database_id = "312c10b5-e88a-44c8-b37f-53aab6698a1a"
+
+[vars]
+JWT_SECRET = "trato_secret_key_2025_very_long_and_secure_change_me"
