@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#071A14">
+<meta name="description" content="TRATO — Inicia sesión o crea tu cuenta.">
+<title>TRATO — Iniciar sesión</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --green:#064E3B;
+  --green-2:#0B6B50;
+  --deep:#061B15;
+  --ink:#08251C;
+  --mint:#D8F7E8;
+  --mint-2:#EFFBF5;
+  --sun:#CE1126;
+  --sun-soft:#E63946;
+  --bg:#F6FAF8;
+  --card:#FFFFFF;
+  --text:#0B2A20;
+  --muted:#60756C;
+  --line:#D9E8E1;
+  --shadow:0 18px 50px rgba(4,40,29,.10);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:400 16px/1.6 var(--body);
+  overflow-x:hidden;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+/* FOND DÉCORATIF */
+.bg-decor{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(216,247,232,.75), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(206,17,38,.10), transparent 50%),
+    linear-gradient(180deg, #F6FAF8 0%, #EFFBF5 100%);
+}
+.bg-decor:before,
+.bg-decor:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  filter:blur(60px);
+  opacity:.55;
+  animation:blob 22s ease-in-out infinite;
+}
+.bg-decor:before{
+  width:520px;height:520px;
+  background:radial-gradient(circle, rgba(6,78,59,.35), transparent 70%);
+  top:-160px;left:-140px;
+}
+.bg-decor:after{
+  width:600px;height:600px;
+  background:radial-gradient(circle, rgba(206,17,38,.25), transparent 70%);
+  bottom:-220px;right:-180px;
+  animation-delay:-8s;
+}
+@keyframes blob{
+  0%,100%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(40px,-30px) scale(1.12)}
+}
+
+/* TOPBAR */
+.topbar{
+  position:relative;
+  z-index:5;
+  padding:22px 0;
+}
+.topbar .wrap{
+  max-width:1180px;margin:auto;padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;
+}
+.logo{
+  font:800 1.55rem var(--display);
+  letter-spacing:-.03em;
+  text-decoration:none;
+  color:var(--deep);
+}
+.logo span{color:var(--sun)}
+
+.topbar-right{
+  display:flex;align-items:center;gap:16px;
+}
+
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font:600 .9rem var(--body);
+  color:var(--muted);
+  text-decoration:none;
+  transition:.2s;
+}
+.back-link:hover{color:var(--green)}
+.back-link svg{transition:.2s}
+.back-link:hover svg{transform:translateX(-3px)}
+
+.lang-toggle{
+  display:inline-flex;
+  padding:3px;
+  background:rgba(6,78,59,.08);
+  border:1px solid rgba(6,78,59,.10);
+  border-radius:999px;
+  gap:2px;
+}
+.lang-toggle button{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font:700 .75rem var(--body);
+  padding:6px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:.2s;
+  letter-spacing:.04em;
+}
+.lang-toggle button[aria-pressed="true"]{
+  background:var(--green);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(6,78,59,.25);
+}
+.lang-toggle button:hover:not([aria-pressed="true"]){
+  color:var(--green);
+}
+
+/* MAIN */
+main{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px 24px 60px;
+  position:relative;
+  z-index:1;
+}
+
+.auth-card{
+  width:100%;
+  max-width:480px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:38px 34px 34px;
+  box-shadow:
+    0 30px 70px rgba(6,78,59,.12),
+    0 6px 18px rgba(6,78,59,.06);
+  position:relative;
+  overflow:hidden;
+}
+
+.auth-title{
+  margin:0 0 6px;
+  text-align:center;
+  font:800 clamp(1.5rem,2.6vw,1.85rem)/1.15 var(--display);
+  letter-spacing:-.03em;
+  color:var(--ink);
+}
+.auth-subtitle{
+  margin:0 auto 26px;
+  text-align:center;
+  color:var(--muted);
+  font-size:.95rem;
+  max-width:340px;
+}
+
+/* Tabs */
+.tabs{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  background:var(--mint-2);
+  border-radius:14px;
+  padding:4px;
+  margin-bottom:26px;
+}
+.tabs input{display:none}
+.tabs label{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  padding:11px 8px;
+  font:700 .92rem var(--body);
+  color:var(--muted);
+  cursor:pointer;
+  border-radius:10px;
+  transition:.25s;
+}
+.tabs input:checked + label{color:#fff}
+.tabs-indicator{
+  position:absolute;
+  top:4px;bottom:4px;
+  width:calc(50% - 4px);
+  background:var(--green);
+  border-radius:10px;
+  transition:transform .3s cubic-bezier(.4,.8,.4,1);
+  box-shadow:0 4px 12px rgba(6,78,59,.25);
+  z-index:1;
+}
+#tab-login:checked ~ .tabs-indicator{transform:translateX(0)}
+#tab-signup:checked ~ .tabs-indicator{transform:translateX(100%)}
+
+/* Panels */
+.panels{position:relative}
+.panel{display:none;animation:fadeIn .35s ease}
+.panel.active{display:block}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* FORMULAIRE */
+.field{
+  position:relative;
+  margin-bottom:14px;
+}
+.field label{
+  display:block;
+  font:700 .8rem var(--body);
+  color:var(--ink);
+  margin-bottom:6px;
+  letter-spacing:.01em;
+}
+.field .input-wrap{
+  position:relative;
+  display:flex;align-items:center;
+  background:var(--card);
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  transition:.2s;
+}
+.field .input-wrap:focus-within{
+  border-color:var(--green);
+  box-shadow:0 0 0 4px rgba(6,78,59,.10);
+}
+.field .input-wrap .prefix{
+  padding:0 10px 0 14px;
+  color:var(--muted);
+  font-weight:700;
+  font-size:.9rem;
+  border-right:1px solid var(--line);
+  margin-right:2px;
+}
+.field .input-wrap .icon{
+  padding:0 14px;
+  color:var(--muted);
+  display:grid;place-items:center;
+}
+.field input{
+  flex:1;
+  border:0;
+  outline:0;
+  background:transparent;
+  padding:13px 14px;
+  font:500 .95rem var(--body);
+  color:var(--text);
+  min-width:0;
+  border-radius:12px;
+}
+.field input::placeholder{color:#9AAEA6}
+.field .input-wrap .prefix + input{padding-left:10px}
+
+.pwd-toggle{
+  border:0;
+  background:transparent;
+  padding:0 14px;
+  color:var(--muted);
+  cursor:pointer;
+  display:grid;place-items:center;
+}
+.pwd-toggle:hover{color:var(--green)}
+
+.form-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin:6px 0 22px;
+  font-size:.86rem;
+  flex-wrap:wrap;
+}
+.check{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  color:var(--muted);
+  font-weight:500;
+  user-select:none;
+}
+.check input{
+  appearance:none;
+  width:16px;height:16px;
+  border:1.5px solid var(--line);
+  border-radius:4px;
+  background:var(--card);
+  cursor:pointer;
+  display:grid;place-items:center;
+  transition:.15s;
+  flex:0 0 auto;
+}
+.check input:checked{
+  background:var(--green);
+  border-color:var(--green);
+}
+.check input:checked::after{
+  content:"";
+  width:4px;height:8px;
+  border:solid #fff;
+  border-width:0 2px 2px 0;
+  transform:rotate(45deg) translate(-1px,-1px);
+}
+.link{
+  color:var(--green);
+  text-decoration:none;
+  font-weight:700;
+  font-size:.86rem;
+}
+.link:hover{text-decoration:underline}
+
+.btn-submit{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:100%;
+  border:0;
+  border-radius:14px;
+  padding:15px 20px;
+  font:800 1rem var(--body);
+  cursor:pointer;
+  background:var(--sun);
+  color:#fff;
+  transition:.25s ease;
+  box-shadow:0 14px 28px rgba(206,17,38,.30);
+}
+.btn-submit:hover{
+  transform:translateY(-2px);
+  box-shadow:0 18px 38px rgba(206,17,38,.42);
+}
+.btn-submit:active{transform:translateY(0)}
+.btn-submit:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+  transform:none;
+}
+
+/* SOCIALS */
+.socials{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.social-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:12px;
+  padding:11px 12px;
+  font:700 .88rem var(--body);
+  color:var(--text);
+  cursor:pointer;
+  transition:.2s;
+}
+.social-btn:hover{
+  border-color:#B9D8CA;
+  background:var(--mint-2);
+  transform:translateY(-1px);
+  box-shadow:0 6px 16px rgba(6,78,59,.08);
+}
+.social-btn svg{flex:0 0 auto}
+
+/* Divider "o" */
+.divider{
+  display:flex;align-items:center;gap:12px;
+  margin:22px 0;
+  color:var(--muted);
+  font-size:.8rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.divider:before,.divider:after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:var(--line);
+}
+
+/* Terms line */
+.terms{
+  margin:14px 0 0;
+  text-align:center;
+  color:var(--muted);
+  font-size:.78rem;
+  line-height:1.5;
+}
+.terms a{color:var(--green);text-decoration:none;font-weight:700}
+.terms a:hover{text-decoration:underline}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  left:50%;bottom:32px;
+  transform:translate(-50%,120%);
+  background:var(--green);
+  color:#fff;
+  padding:13px 20px;
+  border-radius:14px;
+  font-weight:700;
+  font-size:.92rem;
+  box-shadow:0 16px 40px rgba(6,78,59,.35);
+  transition:transform .4s cubic-bezier(.4,.8,.4,1);
+  z-index:100;
+  display:flex;align-items:center;gap:10px;
+  pointer-events:none;
+}
+.toast.show{transform:translate(-50%,0)}
+.toast.error{background:var(--sun)}
+
+/* FOOTER */
+footer{
+  position:relative;
+  z-index:1;
+  padding:22px 0;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.82rem;
+}
+footer .wrap{
+  max-width:1180px;margin:auto;padding:0 24px;
+  display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;
+}
+
+/* RESPONSIVE */
+@media(max-width:560px){
+  .auth-card{
+    padding:30px 22px 26px;
+    border-radius:22px;
+  }
+  main{padding:10px 16px 40px}
+  .topbar .wrap{padding:0 16px}
+  footer .wrap{padding:0 16px}
+  .socials{grid-template-columns:1fr}
+  .back-link span{display:none}
+}
+@media(max-width:400px){
+  .lang-toggle button{padding:5px 9px;font-size:.7rem}
+}
+
+/* accessibility */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{animation-duration:.001ms!important;transition:none!important}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-decor" aria-hidden="true"></div>
+
+<div class="topbar">
+  <div class="wrap">
+    <a href="index.html" class="logo">TRATO<span>.</span></a>
+    <div class="topbar-right">
+      <a href="index.html" class="back-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span data-i18n="back">Volver</span>
+      </a>
+      <div class="lang-toggle" role="group" aria-label="Idioma">
+        <button type="button" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="auth-card">
+    <h1 class="auth-title" data-i18n="title_login">Bienvenido de vuelta</h1>
+    <p class="auth-subtitle" data-i18n="subtitle_login">Inicia sesión para seguir haciendo trato.</p>
+
+    <div class="tabs" role="tablist">
+      <input type="radio" name="tab" id="tab-login" checked>
+      <input type="radio" name="tab" id="tab-signup">
+      <label for="tab-login" data-i18n="tab_login">Iniciar sesión</label>
+      <label for="tab-signup" data-i18n="tab_signup">Crear cuenta</label>
+      <span class="tabs-indicator" aria-hidden="true"></span>
+    </div>
+
+    <div class="panels">
+
+      <!-- ===================== LOGIN ===================== -->
+      <form class="panel active" id="panel-login" novalidate>
+
+        <div class="field">
+          <label for="login-email" data-i18n="label_email">Correo electrónico</label>
+          <div class="input-wrap">
+            <span class="icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2"/>
+                <path d="m3 7 9 6 9-6"/>
+              </svg>
+            </span>
+            <input type="email" id="login-email" name="email" placeholder="tu@correo.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="login-password" data-i18n="label_password">Contraseña</label>
+          <div class="input-wrap">
+            <span class="icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="11" width="16" height="10" rx="2"/>
+                <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+              </svg>
+            </span>
+            <input type="password" id="login-password" name="password" placeholder="••••••••" autocomplete="current-password" required>
+            <button type="button" class="pwd-toggle" aria-label="Mostrar contraseña">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="check">
+            <input type="checkbox" name="remember" checked>
+            <span data-i18n="remember">Recordarme</span>
+          </label>
+          <a href="#" class="link" data-i18n="forgot">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button type="submit" class="btn-submit">
+          <span data-i18n="btn_login">Iniciar sesión</span>
+          <span aria-hidden="true">→</span>
+        </button>
+
+        <div class="divider" data-i18n="or">o</div>
+
+        <div class="socials">
+          <button type="button" class="social-btn" data-social="Google">
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.6-6 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.2-.1-2.4-.1-3.5z"/>
+              <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 16.3 4 9.6 8.3 6.3 14.7z"/>
+              <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2.1 1.5-4.7 2.4-7.2 2.4-5.3 0-9.7-3.4-11.3-8l-6.6 5.1C9.5 39.6 16.2 44 24 44z"/>
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.4l6.2 5.2C41.9 34.9 44 30 44 24c0-1.2-.1-2.4-.4-3.5z"/>
+            </svg>
+            Google
+          </button>
+          <button type="button" class="social-btn" data-social="Apple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M16.4 12.9c0-2.6 2.1-3.9 2.2-4-.1-1.3-1.2-2.4-1.2-2.4-1.2-1.3-2.8-1.4-3.4-1.4-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .7 1.1 1.6 2.3 2.7 2.2 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 2-1.1 2.7-2.2.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.4-.9-2.4-3.6zM14 4.7c.6-.8 1.1-1.9.9-3-.9 0-2 .6-2.6 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/>
+            </svg>
+            Apple
+          </button>
+        </div>
+
+      </form>
+
+      <!-- ===================== SIGNUP ===================== -->
+      <form class="panel" id="panel-signup" novalidate>
+
+        <div class="field">
+          <label for="signup-phone" data-i18n="label_phone">Teléfono (México)</label>
+          <div class="input-wrap">
+            <span class="prefix" aria-hidden="true">🇲🇽 +52</span>
+            <input type="tel" id="signup-phone" name="phone" placeholder="55 1234 5678" autocomplete="tel" inputmode="numeric" maxlength="12">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="signup-email" data-i18n="label_email">Correo electrónico</label>
+          <div class="input-wrap">
+            <span class="icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2"/>
+                <path d="m3 7 9 6 9-6"/>
+              </svg>
+            </span>
+            <input type="email" id="signup-email" name="email" placeholder="tu@correo.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="signup-password" data-i18n="label_password">Contraseña</label>
+          <div class="input-wrap">
+            <span class="icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="11" width="16" height="10" rx="2"/>
+                <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+              </svg>
+            </span>
+            <input type="password" id="signup-password" name="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required minlength="8">
+            <button type="button" class="pwd-toggle" aria-label="Mostrar contraseña">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="signup-password2" data-i18n="label_password2">Confirmar contraseña</label>
+          <div class="input-wrap">
+            <span class="icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="11" width="16" height="10" rx="2"/>
+                <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                <path d="m9 16 2 2 4-4"/>
+              </svg>
+            </span>
+            <input type="password" id="signup-password2" name="password2" placeholder="Repite tu contraseña" autocomplete="new-password" required minlength="8">
+            <button type="button" class="pwd-toggle" aria-label="Mostrar contraseña">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-row" style="justify-content:flex-start;margin-bottom:18px">
+          <label class="check">
+            <input type="checkbox" name="terms" required>
+            <span>
+              <span data-i18n="accept_pre">Acepto los</span>
+              <a href="#" class="link" data-i18n="terms">términos</a>
+              <span data-i18n="and">y la</span>
+              <a href="#" class="link" data-i18n="privacy">política de privacidad</a>
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-submit">
+          <span data-i18n="btn_signup">Crear cuenta</span>
+          <span aria-hidden="true">→</span>
+        </button>
+
+        <div class="divider" data-i18n="or">o</div>
+
+        <div class="socials">
+          <button type="button" class="social-btn" data-social="Google">
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.6-6 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.2-.1-2.4-.1-3.5z"/>
+              <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.1 6.1 29.3 4 24 4 16.3 4 9.6 8.3 6.3 14.7z"/>
+              <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2.1 1.5-4.7 2.4-7.2 2.4-5.3 0-9.7-3.4-11.3-8l-6.6 5.1C9.5 39.6 16.2 44 24 44z"/>
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.4l6.2 5.2C41.9 34.9 44 30 44 24c0-1.2-.1-2.4-.4-3.5z"/>
+            </svg>
+            Google
+          </button>
+          <button type="button" class="social-btn" data-social="Apple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M16.4 12.9c0-2.6 2.1-3.9 2.2-4-.1-1.3-1.2-2.4-1.2-2.4-1.2-1.3-2.8-1.4-3.4-1.4-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .7 1.1 1.6 2.3 2.7 2.2 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 2-1.1 2.7-2.2.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.4-.9-2.4-3.6zM14 4.7c.6-.8 1.1-1.9.9-3-.9 0-2 .6-2.6 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/>
+            </svg>
+            Apple
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+
+    <p class="terms">
+      <span data-i18n="footer_note">Al continuar aceptas nuestros términos y condiciones.</span>
+    </p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 TRATO. <span data-i18n="made_in">Hecho en México.</span></span>
+    <span data-i18n="tagline">Marketplace mexicano · Compra local · Vende fácil</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ✅ NOUVEAU : Client API -->
+<script src="/assets/api.js"></script>
+
+<script>
+/* TRADUCTIONS */
+const I18N = {
+  es: {
+    back:"Volver",
+    title_login:"Bienvenido de vuelta",
+    subtitle_login:"Inicia sesión para seguir haciendo trato.",
+    title_signup:"Crea tu cuenta",
+    subtitle_signup:"Publica tu primer artículo en menos de 30 segundos.",
+    tab_login:"Iniciar sesión",
+    tab_signup:"Crear cuenta",
+    label_email:"Correo electrónico",
+    label_password:"Contraseña",
+    label_password2:"Confirmar contraseña",
+    label_phone:"Teléfono (México)",
+    remember:"Recordarme",
+    forgot:"¿Olvidaste tu contraseña?",
+    or:"o",
+    btn_login:"Iniciar sesión",
+    btn_signup:"Crear cuenta",
+    accept_pre:"Acepto los",
+    terms:"términos",
+    and:"y la",
+    privacy:"política de privacidad",
+    footer_note:"Al continuar aceptas nuestros términos y condiciones.",
+    made_in:"Hecho en México.",
+    tagline:"Marketplace mexicano · Compra local · Vende fácil",
+    toast_signup_ok:"¡Cuenta creada! Redirigiendo…",
+    toast_login_ok:"¡Bienvenido de vuelta! Redirigiendo…",
+    toast_social:"Conectando con {p}…",
+    toast_error_email:"Ingresa un correo válido.",
+    toast_error_pwd:"La contraseña debe tener al menos 8 caracteres.",
+    toast_error_pwd2:"Las contraseñas no coinciden.",
+    toast_error_terms:"Debes aceptar los términos.",
+    toast_error_phone:"Ingresa un teléfono válido (+52).",
+    toast_network_error:"Error de conexión. Intenta de nuevo.",
+    toast_loading:"Conectando…"
+  },
+  en: {
+    back:"Back",
+    title_login:"Welcome back",
+    subtitle_login:"Sign in to keep making deals.",
+    title_signup:"Create your account",
+    subtitle_signup:"Post your first item in under 30 seconds.",
+    tab_login:"Sign in",
+    tab_signup:"Sign up",
+    label_email:"Email address",
+    label_password:"Password",
+    label_password2:"Confirm password",
+    label_phone:"Phone (Mexico)",
+    remember:"Remember me",
+    forgot:"Forgot your password?",
+    or:"or",
+    btn_login:"Sign in",
+    btn_signup:"Create account",
+    accept_pre:"I accept the",
+    terms:"terms",
+    and:"and the",
+    privacy:"privacy policy",
+    footer_note:"By continuing you agree to our terms and conditions.",
+    made_in:"Made in Mexico.",
+    tagline:"Mexican marketplace · Shop local · Sell easily",
+    toast_signup_ok:"Account created! Redirecting…",
+    toast_login_ok:"Welcome back! Redirecting…",
+    toast_social:"Connecting with {p}…",
+    toast_error_email:"Please enter a valid email.",
+    toast_error_pwd:"Password must be at least 8 characters.",
+    toast_error_pwd2:"Passwords don't match.",
+    toast_error_terms:"You must accept the terms.",
+    toast_error_phone:"Please enter a valid phone (+52).",
+    toast_network_error:"Connection error. Please try again.",
+    toast_loading:"Connecting…"
+  }
+};
+
+let currentLang = "es";
+
+function t(key, vars){
+  let str = (I18N[currentLang] && I18N[currentLang][key]) || key;
+  if (vars){
+    Object.keys(vars).forEach(k => { str = str.replace("{"+k+"}", vars[k]); });
+  }
+  return str;
+}
+
+function applyLang(lang){
+  currentLang = lang;
+  document.documentElement.lang = lang === "es" ? "es-MX" : "en";
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    el.textContent = t(key);
+  });
+
+  document.querySelectorAll(".lang-toggle button").forEach(btn => {
+    btn.setAttribute("aria-pressed", btn.dataset.lang === lang ? "true" : "false");
+  });
+
+  const isSignup = document.getElementById("tab-signup").checked;
+  const authTitle = document.querySelector(".auth-title");
+  const authSubtitle = document.querySelector(".auth-subtitle");
+  authTitle.setAttribute("data-i18n", isSignup ? "title_signup" : "title_login");
+  authSubtitle.setAttribute("data-i18n", isSignup ? "subtitle_signup" : "subtitle_login");
+  authTitle.textContent = t(isSignup ? "title_signup" : "title_login");
+  authSubtitle.textContent = t(isSignup ? "subtitle_signup" : "subtitle_login");
+}
+
+document.querySelectorAll(".lang-toggle button").forEach(btn => {
+  btn.addEventListener("click", () => applyLang(btn.dataset.lang));
+});
+
+/* TOAST */
+const toast = document.getElementById("toast");
+let toastTimer;
+function showToast(msg, isError){
+  clearTimeout(toastTimer);
+  toast.textContent = msg;
+  toast.classList.toggle("error", !!isError);
+  toast.classList.add("show");
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
+}
+
+/* TABS */
+const tabLogin  = document.getElementById("tab-login");
+const tabSignup = document.getElementById("tab-signup");
+const panelLogin  = document.getElementById("panel-login");
+const panelSignup = document.getElementById("panel-signup");
+const authTitle = document.querySelector(".auth-title");
+const authSubtitle = document.querySelector(".auth-subtitle");
+
+function refreshTabs(){
+  const isSignup = tabSignup.checked;
+  panelLogin.classList.toggle("active", !isSignup);
+  panelSignup.classList.toggle("active", isSignup);
+
+  authTitle.setAttribute("data-i18n", isSignup ? "title_signup" : "title_login");
+  authSubtitle.setAttribute("data-i18n", isSignup ? "subtitle_signup" : "subtitle_login");
+  authTitle.textContent = t(isSignup ? "title_signup" : "title_login");
+  authSubtitle.textContent = t(isSignup ? "subtitle_signup" : "subtitle_login");
+}
+
+tabLogin.addEventListener("change", refreshTabs);
+tabSignup.addEventListener("change", refreshTabs);
+refreshTabs();
+
+/* PASSWORD TOGGLES */
+document.querySelectorAll(".pwd-toggle").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const wrap = btn.closest(".input-wrap");
+    const input = wrap.querySelector("input");
+    if (!input) return;
+    const isPwd = input.type === "password";
+    input.type = isPwd ? "text" : "password";
+
+    btn.innerHTML = isPwd
+      ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+           <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-10-8-10-8a18.45 18.45 0 0 1 5.06-5.94"/>
+           <path d="M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 10 8 10 8a18.5 18.5 0 0 1-2.16 3.19"/>
+           <path d="m1 1 22 22"/>
+         </svg>`
+      : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+           <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+           <circle cx="12" cy="12" r="3"/>
+         </svg>`;
+  });
+});
+
+/* SOCIAL BUTTONS (visuels uniquement) */
+document.querySelectorAll(".social-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const provider = btn.dataset.social;
+    showToast(t("toast_social", {p: provider}));
+    setTimeout(() => {
+      window.location.href = "/dashboard.html";
+    }, 1200);
+  });
+});
+
+/* VALIDATION */
+function isEmail(v){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+function isPhoneMX(v){
+  const digits = v.replace(/\D/g, "");
+  return digits.length === 10;
+}
+
+const phoneInput = document.getElementById("signup-phone");
+if (phoneInput){
+  phoneInput.addEventListener("input", () => {
+    let d = phoneInput.value.replace(/\D/g, "").slice(0, 10);
+    let out = "";
+    if (d.length > 0) out = d.slice(0, 2);
+    if (d.length > 2) out += " " + d.slice(2, 6);
+    if (d.length > 6) out += " " + d.slice(6, 10);
+    phoneInput.value = out;
+  });
+}
+
+/* ============================================================
+   SUBMIT LOGIN — CONNECTÉ AU VRAI BACKEND
+   ============================================================ */
+panelLogin.addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const email = document.getElementById("login-email").value.trim();
+  const pwd   = document.getElementById("login-password").value;
+  const btn   = panelLogin.querySelector('button[type="submit"]');
+  const originalHTML = btn.innerHTML;
+
+  // Validations côté client
+  if (!isEmail(email)){
+    return showToast(t("toast_error_email"), true);
+  }
+  if (pwd.length < 8){
+    return showToast(t("toast_error_pwd"), true);
+  }
+
+  // Loading
+  btn.disabled = true;
+  btn.innerHTML = '⏳ ' + t("toast_loading");
+
+  try {
+    const data = await API.login({ email, password: pwd });
+
+    // Succès
+    showToast(t("toast_login_ok"));
+    setTimeout(() => {
+      window.location.href = "/dashboard.html";
+    }, 800);
+
+  } catch (err){
+    showToast(err.message || t("toast_network_error"), true);
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+});
+
+/* ============================================================
+   SUBMIT SIGNUP — CONNECTÉ AU VRAI BACKEND
+   ============================================================ */
+panelSignup.addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const phone  = document.getElementById("signup-phone").value.trim();
+  const email  = document.getElementById("signup-email").value.trim();
+  const pwd    = document.getElementById("signup-password").value;
+  const pwd2   = document.getElementById("signup-password2").value;
+  const terms  = panelSignup.querySelector('input[name="terms"]').checked;
+  const btn    = panelSignup.querySelector('button[type="submit"]');
+  const originalHTML = btn.innerHTML;
+
+  // Validations côté client
+  if (!isPhoneMX(phone)){
+    return showToast(t("toast_error_phone"), true);
+  }
+  if (!isEmail(email)){
+    return showToast(t("toast_error_email"), true);
+  }
+  if (pwd.length < 8){
+    return showToast(t("toast_error_pwd"), true);
+  }
+  if (pwd !== pwd2){
+    return showToast(t("toast_error_pwd2"), true);
+  }
+  if (!terms){
+    return showToast(t("toast_error_terms"), true);
+  }
+
+  // Loading
+  btn.disabled = true;
+  btn.innerHTML = '⏳ ' + t("toast_loading");
+
+  try {
+    // Nom temporaire basé sur le début de l'email
+    const name = email.split('@')[0];
+
+    await API.register({
+      name,
+      email,
+      phone,
+      password: pwd
+    });
+
+    // Succès
+    showToast(t("toast_signup_ok"));
+    setTimeout(() => {
+      window.location.href = "/dashboard.html";
+    }, 800);
+
+  } catch (err){
+    showToast(err.message || t("toast_network_error"), true);
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+});
+
+/* LANG INIT */
+applyLang("es");
+</script>
+
+</body>
+</html>
