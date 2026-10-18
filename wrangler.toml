@@ -7,5 +7,10 @@ binding = "DB"
 database_name = "trato-db"
 database_id = "312c10b5-e88a-44c8-b37f-53aab6698a1a"
 
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "trato-media"
+
 [vars]
 JWT_SECRET = "trato_secret_key_2025_very_long_and_secure_change_me"
+R2_PUBLIC_URL = "https://pub-cbf72adfd9d54df2b37a54039d256a46.r2.dev"
