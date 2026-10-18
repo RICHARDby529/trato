@@ -16,8 +16,8 @@ export async function onRequestPost(context){
     if (!files.length){
       return error('Aucune image envoyée', 400);
     }
-    if (files.length > 5){
-      return error('Maximum 5 images par article', 400);
+    if (files.length > 20){
+      return error('Maximum 20 images par article', 400);
     }
 
     const urls = [];

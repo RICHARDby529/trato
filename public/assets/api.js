@@ -85,7 +85,39 @@ const API = {
     return this.request('/api/auth/me');
   },
 
-  // Déconnexion
+  // ---------- Upload d'images ----------
+  async uploadImages(files){
+    const formData = new FormData();
+    files.forEach(f => formData.append('images', f));
+    return this.request('/api/upload', {
+      method: 'POST',
+      body: formData
+    });
+  },
+
+  // ---------- Articles ----------
+  async createListing(data){
+    return this.request('/api/listings', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async getMyListings(){
+    return this.request('/api/listings?mine=1');
+  },
+
+  async getAllListings(){
+    return this.request('/api/listings');
+  },
+
+  async deleteListing(id){
+    return this.request('/api/listings/' + id, {
+      method: 'DELETE'
+    });
+  },
+
+  // ---------- Déconnexion ----------
   logout(){
     this.clearSession();
   }

@@ -47,7 +47,7 @@ body{
   min-height:100vh;
 }
 a{color:inherit;text-decoration:none}
-button,input{font:inherit}
+button,input,textarea,select{font:inherit}
 button{cursor:pointer;border:0;background:transparent}
 :focus-visible{outline:3px solid var(--sun);outline-offset:3px}
 
@@ -55,26 +55,18 @@ button{cursor:pointer;border:0;background:transparent}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes slideIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-@keyframes barGrow{from{height:4px;opacity:.3}to{height:8px;opacity:.7}}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* HEADER */
 .header{
-  position:fixed;
-  top:0;left:0;right:0;
-  height:var(--header-h);
-  background:var(--card);
-  border-bottom:1px solid var(--line);
-  z-index:50;
-  display:flex;
-  align-items:center;
-  padding:0 24px;
-  gap:24px;
+  position:fixed;top:0;left:0;right:0;height:var(--header-h);
+  background:var(--card);border-bottom:1px solid var(--line);
+  z-index:50;display:flex;align-items:center;padding:0 24px;gap:24px;
   animation:fadeIn .4s ease both;
 }
 .header-left{display:flex;align-items:center;gap:16px;flex:0 0 auto}
 .logo{font:800 1.4rem var(--display);letter-spacing:-.03em;color:var(--deep)}
 .logo span{color:var(--sun)}
-
 .header-search{flex:1;max-width:520px;position:relative;display:flex;align-items:center}
 .header-search svg{position:absolute;left:14px;color:var(--muted-2);pointer-events:none}
 .header-search input{
@@ -84,7 +76,6 @@ button{cursor:pointer;border:0;background:transparent}
 }
 .header-search input::placeholder{color:var(--muted-2)}
 .header-search input:focus{border-color:var(--green);background:var(--card);box-shadow:0 0 0 4px rgba(6,78,59,.08)}
-
 .header-right{display:flex;align-items:center;gap:12px;flex:0 0 auto;margin-left:auto}
 
 .lang-toggle{
@@ -105,6 +96,7 @@ button{cursor:pointer;border:0;background:transparent}
   background:var(--sun);color:#fff;padding:10px 16px;
   border-radius:12px;font:700 .87rem var(--body);
   transition:.2s;box-shadow:0 6px 16px rgba(206,17,38,.22);
+  cursor:pointer;
 }
 .btn-publish:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(206,17,38,.32)}
 
@@ -112,6 +104,7 @@ button{cursor:pointer;border:0;background:transparent}
   position:relative;width:40px;height:40px;border-radius:12px;
   display:grid;place-items:center;color:var(--muted);
   transition:.2s;border:1.5px solid var(--line);background:var(--card);
+  cursor:pointer;
 }
 .notif-btn:hover{color:var(--green);border-color:#B9D8CA}
 .notif-btn .badge{
@@ -256,49 +249,17 @@ button{cursor:pointer;border:0;background:transparent}
   display:inline-flex;align-items:center;gap:7px;
   background:var(--green);color:#fff;padding:10px 18px;
   border-radius:11px;font:700 .85rem var(--body);transition:.2s;
+  cursor:pointer;
 }
 .empty .btn-empty:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(6,78,59,.22)}
-
-/* CHART */
-.chart-wrap{height:200px;position:relative;margin-top:6px}
-.chart-bars{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  gap:8px;height:100%;padding:0 4px;position:relative;
-}
-.chart-bars:before{
-  content:"";position:absolute;inset:0;
-  background-image:linear-gradient(to bottom, var(--line) 1px, transparent 1px);
-  background-size:100% 33.33%;opacity:.55;pointer-events:none;
-}
-.chart-bar{
-  flex:1;max-width:34px;
-  background:linear-gradient(to top, var(--mint), var(--mint-2));
-  border-radius:6px 6px 2px 2px;height:4px;position:relative;z-index:1;
-  animation:barGrow .8s cubic-bezier(.4,.8,.4,1) both;
-}
-.chart-bar:nth-child(1){animation-delay:.1s}
-.chart-bar:nth-child(2){animation-delay:.15s}
-.chart-bar:nth-child(3){animation-delay:.2s}
-.chart-bar:nth-child(4){animation-delay:.25s}
-.chart-bar:nth-child(5){animation-delay:.3s}
-.chart-bar:nth-child(6){animation-delay:.35s}
-.chart-bar:nth-child(7){animation-delay:.4s}
-.chart-x{
-  display:flex;justify-content:space-between;margin-top:8px;padding:0 4px;
-  color:var(--muted-2);font:700 .7rem var(--body);letter-spacing:.02em;
-}
-.chart-x span{flex:1;text-align:center}
 
 /* TIPS */
 .tip-list{display:flex;flex-direction:column;gap:12px}
 .tip{
   display:flex;gap:12px;align-items:flex-start;padding:14px;
   background:var(--mint-2);border-radius:12px;border:1px solid transparent;
-  transition:.2s;animation:fadeUp .5s ease both;
+  transition:.2s;
 }
-.tip:nth-child(1){animation-delay:.1s}
-.tip:nth-child(2){animation-delay:.2s}
-.tip:nth-child(3){animation-delay:.3s}
 .tip:hover{border-color:#C8DED5;transform:translateX(4px)}
 .tip-emoji{font-size:1.3rem;flex:0 0 auto;line-height:1}
 .tip strong{
@@ -307,32 +268,144 @@ button{cursor:pointer;border:0;background:transparent}
 }
 .tip p{margin:0;color:var(--muted);font-size:.8rem;line-height:1.5}
 
-/* FILTERS */
-.filters{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
-.filter-chip{
-  padding:8px 14px;border-radius:999px;
-  border:1.5px solid var(--line);background:var(--card);
-  color:var(--muted);font:700 .82rem var(--body);transition:.2s;
+/* FORMULAIRE DE PUBLICATION */
+.publish-form{display:flex;flex-direction:column;gap:20px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{
+  font:700 .85rem var(--body);color:var(--ink);letter-spacing:.01em;
 }
-.filter-chip:hover{border-color:#C8DED5;color:var(--ink)}
-.filter-chip.active{
-  background:var(--green);border-color:var(--green);color:#fff;
-  transform:scale(1.03);
+.form-group label .req{color:var(--sun);margin-left:2px}
+.form-group small{font-size:.78rem;color:var(--muted);margin-top:2px}
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;border:1.5px solid var(--line);border-radius:12px;
+  padding:13px 14px;font:500 .95rem var(--body);color:var(--text);
+  background:var(--card);outline:0;transition:.2s;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder{color:#9AAEA6}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+  border-color:var(--green);box-shadow:0 0 0 4px rgba(6,78,59,.08);
+}
+.form-group textarea{resize:vertical;min-height:100px}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* Upload zone */
+.upload-zone{
+  border:2px dashed var(--line-2);border-radius:16px;
+  padding:32px 20px;text-align:center;background:var(--mint-2);
+  cursor:pointer;transition:.25s;position:relative;
+}
+.upload-zone:hover,
+.upload-zone.dragover{
+  border-color:var(--green);background:var(--mint);
+}
+.upload-zone-icon{
+  width:56px;height:56px;margin:0 auto 12px;border-radius:16px;
+  background:var(--card);display:grid;place-items:center;
+  color:var(--green);transition:.25s;
+}
+.upload-zone:hover .upload-zone-icon{transform:scale(1.08)}
+.upload-zone h3{margin:0 0 4px;font:800 .95rem var(--display);color:var(--ink)}
+.upload-zone p{margin:0;font-size:.82rem;color:var(--muted)}
+.upload-zone input[type="file"]{
+  position:absolute;inset:0;opacity:0;cursor:pointer;
 }
 
-/* PROFILE */
+.image-preview-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+  gap:10px;margin-top:14px;
+}
+.image-preview-item{
+  position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;
+  border:1.5px solid var(--line);background:var(--bg);
+  animation:fadeIn .3s ease;
+}
+.image-preview-item img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.image-preview-remove{
+  position:absolute;top:6px;right:6px;
+  width:26px;height:26px;border-radius:50%;
+  background:rgba(0,0,0,.7);color:#fff;
+  display:grid;place-items:center;font-size:14px;
+  transition:.2s;z-index:2;cursor:pointer;
+}
+.image-preview-remove:hover{
+  background:var(--sun);transform:scale(1.1);
+}
+
+/* Buttons */
+.publish-actions{
+  display:flex;gap:12px;justify-content:flex-end;
+  padding-top:10px;flex-wrap:wrap;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--sun);color:#fff;padding:14px 24px;border-radius:12px;
+  font:800 .95rem var(--body);transition:.25s;cursor:pointer;
+  box-shadow:0 10px 24px rgba(206,17,38,.25);border:0;
+}
+.btn-primary:hover:not(:disabled){
+  transform:translateY(-2px);box-shadow:0 14px 30px rgba(206,17,38,.35);
+}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+.spinner{
+  width:16px;height:16px;
+  border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
+  border-radius:50%;animation:spin .7s linear infinite;display:inline-block;
+}
+
+/* Articles grid */
+.article-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:18px;
+}
+.article-card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  overflow:hidden;transition:.25s;animation:fadeUp .4s ease both;
+}
+.article-card:hover{
+  border-color:#C8DED5;transform:translateY(-3px);box-shadow:var(--shadow-sm);
+}
+.article-card-img{
+  width:100%;height:180px;object-fit:cover;background:var(--mint-2);display:block;
+}
+.article-card-body{padding:16px}
+.article-card-body h3{
+  margin:0 0 6px;font:800 1rem var(--display);color:var(--ink);
+  letter-spacing:-.01em;line-height:1.3;
+}
+.article-card-price{
+  font:800 1.35rem var(--display);color:var(--green);
+  letter-spacing:-.02em;margin:0 0 8px;
+}
+.article-card-meta{
+  display:flex;align-items:center;gap:8px;
+  color:var(--muted);font-size:.78rem;flex-wrap:wrap;
+}
+.article-card-meta .badge{
+  background:var(--mint-2);color:var(--green);
+  padding:2px 8px;border-radius:999px;font-weight:700;font-size:.72rem;
+}
+
+/* Profile */
 .profile-card{
   display:flex;gap:20px;align-items:center;padding:22px;
   background:var(--card);border:1px solid var(--line);border-radius:16px;
-  margin-bottom:22px;flex-wrap:wrap;animation:fadeUp .5s ease both;
+  margin-bottom:22px;flex-wrap:wrap;
 }
 .profile-avatar{
   width:76px;height:76px;border-radius:50%;
   background:linear-gradient(135deg,var(--green),var(--green-2));
   color:#fff;display:grid;place-items:center;
-  font:800 1.4rem var(--display);flex:0 0 auto;transition:.25s;
+  font:800 1.4rem var(--display);flex:0 0 auto;
 }
-.profile-card:hover .profile-avatar{transform:scale(1.05);box-shadow:0 8px 24px rgba(6,78,59,.20)}
 .profile-info{flex:1;min-width:200px}
 .profile-info h2{margin:0 0 4px;font:800 1.35rem var(--display);letter-spacing:-.02em;color:var(--ink)}
 .profile-info .meta{color:var(--muted);font-size:.88rem;margin:0 0 10px}
@@ -359,7 +432,22 @@ button{cursor:pointer;border:0;background:transparent}
 .setting-toggle.on{background:var(--green)}
 .setting-toggle.on:after{left:21px}
 
-/* TAB BAR MOBILE */
+/* Toast */
+.toast{
+  position:fixed;left:50%;bottom:32px;
+  transform:translate(-50%,120%);
+  background:var(--green);color:#fff;
+  padding:13px 20px;border-radius:14px;
+  font-weight:700;font-size:.92rem;
+  box-shadow:0 16px 40px rgba(6,78,59,.35);
+  transition:transform .4s cubic-bezier(.4,.8,.4,1);
+  z-index:100;pointer-events:none;
+  max-width:90vw;
+}
+.toast.show{transform:translate(-50%,0)}
+.toast.error{background:var(--sun)}
+
+/* Tab bar mobile */
 .tabbar{
   display:none;position:fixed;bottom:0;left:0;right:0;height:64px;
   background:var(--card);border-top:1px solid var(--line);z-index:60;
@@ -375,7 +463,7 @@ button{cursor:pointer;border:0;background:transparent}
 }
 .tabbar a.active{color:var(--green)}
 
-/* RESPONSIVE */
+/* Responsive */
 @media(max-width:960px){
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .grid-2,.grid-2-equal{grid-template-columns:1fr}
@@ -396,6 +484,9 @@ button{cursor:pointer;border:0;background:transparent}
   .stats-grid{gap:12px}
   .stat-card{padding:16px}
   .stat-value{font-size:1.65rem}
+  .form-row-2{grid-template-columns:1fr}
+  .publish-actions{justify-content:stretch}
+  .publish-actions button{width:100%;justify-content:center}
 }
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{animation-duration:.001ms!important;transition:none!important}
@@ -405,19 +496,13 @@ button{cursor:pointer;border:0;background:transparent}
 
 <body>
 
-<!-- Client API -->
 <script src="/assets/api.js"></script>
-
-<!-- Protection : redirection si non connecté -->
 <script>
-(function(){
-  if (typeof API === "undefined" || !API.isLoggedIn()){
-    window.location.replace("/login.html");
-  }
-})();
+if (typeof API === "undefined" || !API.isLoggedIn()){
+  window.location.replace("/login.html");
+}
 </script>
 
-<!-- HEADER -->
 <header class="header">
   <div class="header-left">
     <a href="/" class="logo">TRATO<span>.</span></a>
@@ -425,10 +510,9 @@ button{cursor:pointer;border:0;background:transparent}
 
   <form class="header-search" role="search" onsubmit="return false">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="11" cy="11" r="8"/>
-      <path d="m21 21-4.3-4.3"/>
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
     </svg>
-    <input type="search" placeholder="Buscar artículos, personas…" data-i18n-ph="search_ph" aria-label="Buscar">
+    <input type="search" placeholder="Buscar artículos, personas…" aria-label="Buscar">
   </form>
 
   <div class="header-right">
@@ -441,111 +525,78 @@ button{cursor:pointer;border:0;background:transparent}
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 5v14M5 12h14"/>
       </svg>
-      <span data-i18n="publish">Publicar</span>
+      <span>Publicar</span>
     </a>
 
     <button class="notif-btn" aria-label="Notificaciones">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
       </svg>
       <span class="badge">0</span>
     </button>
 
     <div class="avatar-wrap">
-      <div class="avatar" id="avatarBtn" role="button" tabindex="0" aria-label="Menú">U</div>
+      <div class="avatar" id="avatarBtn" role="button" tabindex="0">U</div>
       <div class="avatar-menu" id="avatarMenu">
         <div class="who">
           <strong id="userName">Usuario</strong>
-          <span id="userEmail" data-i18n="member_since">Vendedor desde marzo 2025</span>
+          <span id="userEmail">—</span>
         </div>
         <a href="#perfil" data-nav="perfil">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="8" r="4"/>
-            <path d="M4 21a8 8 0 0 1 16 0"/>
-          </svg>
-          <span data-i18n="menu_profile">Mi perfil</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span>Mi perfil</span>
         </a>
         <a href="#ajustes" data-nav="ajustes">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-          </svg>
-          <span data-i18n="menu_settings">Ajustes</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Ajustes</span>
         </a>
         <a href="#" id="logoutBtn" class="danger">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-            <path d="m16 17 5-5-5-5"/>
-            <path d="M21 12H9"/>
-          </svg>
-          <span data-i18n="menu_logout">Cerrar sesión</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+          <span>Cerrar sesión</span>
         </a>
       </div>
     </div>
   </div>
 </header>
 
-<!-- LAYOUT -->
 <div class="layout">
   <aside class="sidebar">
     <nav>
-      <div class="nav-section-title" data-i18n="nav_general">General</div>
+      <div class="nav-section-title">General</div>
       <a href="#dashboard" class="nav-link active" data-nav="dashboard">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/>
-          <rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>
-        </svg>
-        <span data-i18n="nav_dashboard">Vista general</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        <span>Vista general</span>
       </a>
       <a href="#articulos" class="nav-link" data-nav="articulos">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m7.5 4.27 9 5.15"/>
-          <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
-          <path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>
-        </svg>
-        <span data-i18n="nav_items">Mis artículos</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M12 22V12"/></svg>
+        <span>Mis artículos</span>
       </a>
       <a href="#publicar" class="nav-link" data-nav="publicar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/>
-        </svg>
-        <span data-i18n="nav_publish">Publicar</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+        <span>Publicar</span>
       </a>
       <a href="#mensajes" class="nav-link" data-nav="mensajes">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/>
-        </svg>
-        <span data-i18n="nav_messages">Mensajes</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+        <span>Mensajes</span>
         <span class="nav-count">0</span>
       </a>
       <a href="#favoritos" class="nav-link" data-nav="favoritos">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-        </svg>
-        <span data-i18n="nav_favorites">Favoritos</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <span>Favoritos</span>
       </a>
-      <div class="nav-section-title" data-i18n="nav_account">Cuenta</div>
+      <div class="nav-section-title">Cuenta</div>
       <a href="#perfil" class="nav-link" data-nav="perfil">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>
-        </svg>
-        <span data-i18n="nav_profile">Mi perfil</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        <span>Mi perfil</span>
       </a>
       <a href="#ajustes" class="nav-link" data-nav="ajustes">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
-        <span data-i18n="nav_settings">Parámetros</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Parámetros</span>
       </a>
       <div class="sidebar-footer">
         <a href="#" id="logoutBtnSidebar" class="nav-link">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-            <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>
-          </svg>
-          <span data-i18n="nav_logout">Cerrar sesión</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+          <span>Cerrar sesión</span>
         </a>
       </div>
     </nav>
@@ -557,163 +608,87 @@ button{cursor:pointer;border:0;background:transparent}
     <section class="page active" id="page-dashboard">
       <div class="page-head">
         <div>
-          <h1 data-i18n="page_dashboard_title">Vista general</h1>
-          <p data-i18n="page_dashboard_sub">Tu actividad reciente.</p>
+          <h1>Vista general</h1>
+          <p>Tu actividad reciente.</p>
         </div>
       </div>
 
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-head"><div class="stat-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
           </div></div>
-          <p class="stat-value">0</p>
-          <p class="stat-label" data-i18n="stat_views">Vistas totales</p>
-          <p class="stat-sub" data-i18n="stat_views_sub">Últimos 30 días</p>
+          <p class="stat-value" id="statViews">0</p>
+          <p class="stat-label">Vistas totales</p>
+          <p class="stat-sub">Últimos 30 días</p>
         </div>
         <div class="stat-card">
           <div class="stat-head"><div class="stat-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
-              <path d="M12 22V12"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M12 22V12"/></svg>
           </div></div>
-          <p class="stat-value">0</p>
-          <p class="stat-label" data-i18n="stat_items">Artículos activos</p>
-          <p class="stat-sub" data-i18n="stat_items_sub">Publicados y visibles</p>
+          <p class="stat-value" id="statItems">0</p>
+          <p class="stat-label">Artículos activos</p>
+          <p class="stat-sub">Publicados y visibles</p>
         </div>
         <div class="stat-card">
           <div class="stat-head"><div class="stat-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
           </div></div>
           <p class="stat-value">0</p>
-          <p class="stat-label" data-i18n="stat_msgs">Mensajes recibidos</p>
-          <p class="stat-sub" data-i18n="stat_msgs_sub">Sin leer</p>
+          <p class="stat-label">Mensajes recibidos</p>
+          <p class="stat-sub">Sin leer</p>
         </div>
         <div class="stat-card">
           <div class="stat-head"><div class="stat-icon red">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="1" x2="12" y2="23"/>
-              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div></div>
           <p class="stat-value">0</p>
-          <p class="stat-label" data-i18n="stat_sales">Ventas realizadas</p>
-          <p class="stat-sub" data-i18n="stat_sales_sub">Desde tus inicios</p>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-head">
-            <h2 data-i18n="chart_title">Vistas en 7 días</h2>
-            <a href="#" class="link" data-i18n="see_more">Ver más</a>
-          </div>
-          <div class="chart-wrap">
-            <div class="chart-bars">
-              <div class="chart-bar"></div><div class="chart-bar"></div>
-              <div class="chart-bar"></div><div class="chart-bar"></div>
-              <div class="chart-bar"></div><div class="chart-bar"></div>
-              <div class="chart-bar"></div>
-            </div>
-            <div class="chart-x">
-              <span data-i18n="day_mon">Lun</span><span data-i18n="day_tue">Mar</span>
-              <span data-i18n="day_wed">Mié</span><span data-i18n="day_thu">Jue</span>
-              <span data-i18n="day_fri">Vie</span><span data-i18n="day_sat">Sáb</span>
-              <span data-i18n="day_sun">Dom</span>
-            </div>
-          </div>
-          <div class="empty" style="padding:20px 0 0">
-            <p style="margin:0;font-size:.85rem" data-i18n="chart_empty">Publica tu primer artículo para ver tus estadísticas aquí.</p>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <h2 data-i18n="recent_msgs">Últimos mensajes</h2>
-            <a href="#mensajes" class="link" data-nav="mensajes" data-i18n="see_all">Ver todo</a>
-          </div>
-          <div class="empty">
-            <div class="empty-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/>
-              </svg>
-            </div>
-            <h3 data-i18n="msgs_empty_title">Aún no tienes mensajes</h3>
-            <p data-i18n="msgs_empty_desc">Publica un artículo para empezar a recibir mensajes.</p>
-            <a href="#publicar" class="btn-empty" data-nav="publicar">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 5v14M5 12h14"/>
-              </svg>
-              <span data-i18n="publish_first">Publicar mi primer artículo</span>
-            </a>
-          </div>
+          <p class="stat-label">Ventas realizadas</p>
+          <p class="stat-sub">Desde tus inicios</p>
         </div>
       </div>
 
       <div class="grid-2-equal">
         <div class="card">
           <div class="card-head">
-            <h2 data-i18n="recent_items">Artículos recientes</h2>
-            <a href="#articulos" class="link" data-nav="articulos" data-i18n="see_all">Ver todo</a>
+            <h2>Artículos recientes</h2>
+            <a href="#articulos" class="link" data-nav="articulos">Ver todo</a>
           </div>
-          <div class="empty">
+          <div id="recentItemsEmpty" class="empty">
             <div class="empty-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <path d="m3 9 18-6M3 15l18-6"/>
-              </svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 18-6M3 15l18-6"/></svg>
             </div>
-            <h3 data-i18n="items_empty_title">Aún no has publicado nada</h3>
-            <p data-i18n="items_empty_desc">Tus artículos aparecerán aquí en cuanto publiques el primero.</p>
+            <h3>Aún no has publicado nada</h3>
+            <p>Tus artículos aparecerán aquí en cuanto publiques el primero.</p>
           </div>
+          <div id="recentItemsGrid" class="article-grid" style="display:none;"></div>
         </div>
 
         <div class="card">
           <div class="card-head">
-            <h2 data-i18n="activity_title">Actividad reciente</h2>
+            <h2>Consejos para vender más rápido</h2>
           </div>
-          <div class="empty">
-            <div class="empty-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
+          <div class="tip-list">
+            <div class="tip">
+              <div class="tip-emoji">📸</div>
+              <div>
+                <strong>Toma buenas fotos</strong>
+                <p>Un artículo con 3 fotos o más se vende 2× más rápido.</p>
+              </div>
             </div>
-            <h3 data-i18n="activity_empty_title">Aún no hay actividad</h3>
-            <p data-i18n="activity_empty_desc">Tu historial se mostrará aquí.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <h2 data-i18n="tips_title">Consejos para vender más rápido</h2>
-        </div>
-        <div class="tip-list">
-          <div class="tip">
-            <div class="tip-emoji">📸</div>
-            <div>
-              <strong data-i18n="tip1_title">Toma buenas fotos</strong>
-              <p data-i18n="tip1_desc">Un artículo con 3 fotos o más se vende 2× más rápido.</p>
+            <div class="tip">
+              <div class="tip-emoji">💰</div>
+              <div>
+                <strong>Fija un precio justo</strong>
+                <p>Mira artículos similares cerca de ti para encontrar el precio correcto.</p>
+              </div>
             </div>
-          </div>
-          <div class="tip">
-            <div class="tip-emoji">💰</div>
-            <div>
-              <strong data-i18n="tip2_title">Fija un precio justo</strong>
-              <p data-i18n="tip2_desc">Mira artículos similares cerca de ti para encontrar el precio correcto.</p>
-            </div>
-          </div>
-          <div class="tip">
-            <div class="tip-emoji">⚡</div>
-            <div>
-              <strong data-i18n="tip3_title">Responde rápido</strong>
-              <p data-i18n="tip3_desc">Los vendedores que responden en menos de 1 h tienen 3× más probabilidades de cerrar.</p>
+            <div class="tip">
+              <div class="tip-emoji">⚡</div>
+              <div>
+                <strong>Responde rápido</strong>
+                <p>Los vendedores que responden en menos de 1 h tienen 3× más probabilidades de cerrar.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -724,67 +699,129 @@ button{cursor:pointer;border:0;background:transparent}
     <section class="page" id="page-articulos">
       <div class="page-head">
         <div>
-          <h1 data-i18n="page_items_title">Mis artículos</h1>
-          <p data-i18n="page_items_sub">Gestiona tus anuncios publicados, en borrador o vendidos.</p>
+          <h1>Mis artículos</h1>
+          <p>Gestiona tus anuncios publicados.</p>
         </div>
-        <a href="#publicar" class="btn-publish" data-nav="publicar" style="margin-top:6px">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 5v14M5 12h14"/>
-          </svg>
-          <span data-i18n="new_item">Nuevo artículo</span>
+        <a href="#publicar" class="btn-publish" data-nav="publicar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Nuevo artículo</span>
         </a>
       </div>
 
-      <div class="filters">
-        <button class="filter-chip active" data-i18n="filter_all">Todos</button>
-        <button class="filter-chip" data-i18n="filter_active">Publicados</button>
-        <button class="filter-chip" data-i18n="filter_draft">Borradores</button>
-        <button class="filter-chip" data-i18n="filter_sold">Vendidos</button>
-      </div>
-
-      <div class="card">
+      <div id="myItemsEmpty" class="card">
         <div class="empty">
           <div class="empty-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m7.5 4.27 9 5.15"/>
-              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
-              <path d="M12 22V12"/>
-            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M12 22V12"/></svg>
           </div>
-          <h3 data-i18n="items_page_empty_title">Todavía no has publicado nada</h3>
-          <p data-i18n="items_page_empty_desc">Publica tu primer artículo y empieza a ganar dinero hoy mismo.</p>
-          <a href="#publicar" class="btn-empty" data-nav="publicar">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 5v14M5 12h14"/>
-            </svg>
-            <span data-i18n="publish_first">Publicar mi primer artículo</span>
-          </a>
+          <h3>Todavía no has publicado nada</h3>
+          <p>Publica tu primer artículo y empieza a ganar dinero hoy mismo.</p>
+          <a href="#publicar" class="btn-empty" data-nav="publicar">Publicar mi primer artículo</a>
         </div>
       </div>
+      <div id="myItemsGrid" class="article-grid" style="display:none;"></div>
     </section>
 
     <!-- PUBLICAR -->
     <section class="page" id="page-publicar">
       <div class="page-head">
         <div>
-          <h1 data-i18n="page_publish_title">Publicar un artículo</h1>
-          <p data-i18n="page_publish_sub">Con unos datos basta para empezar a vender.</p>
+          <h1>Publicar un artículo</h1>
+          <p>Con unos datos basta para empezar a vender.</p>
         </div>
       </div>
+
       <div class="card">
-        <div class="empty">
-          <div class="empty-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
-              <circle cx="12" cy="13" r="3"/>
-            </svg>
+        <form id="publishForm" class="publish-form" novalidate>
+
+          <div class="form-group">
+            <label>Fotos del artículo <span class="req">*</span></label>
+            <div class="upload-zone" id="uploadZone">
+              <div class="upload-zone-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+              </div>
+              <h3>Haz clic o arrastra tus fotos aquí</h3>
+              <p>Hasta 20 fotos · 5 MB máx por foto</p>
+              <input type="file" id="imageInput" accept="image/*" multiple>
+            </div>
+            <div class="image-preview-grid" id="imagePreviewGrid"></div>
+            <small>Máximo 20 imágenes · 5 MB por imagen</small>
           </div>
-          <h3 data-i18n="publish_page_title">El formulario de publicación llegará pronto</h3>
-          <p data-i18n="publish_page_desc">Esta sección te permitirá añadir una foto, un precio y una descripción.</p>
-          <a href="#dashboard" class="btn-empty" data-nav="dashboard" style="background:var(--muted)">
-            <span data-i18n="back_dashboard">Volver a la vista general</span>
-          </a>
-        </div>
+
+          <div class="form-group">
+            <label for="titleInput">Título del artículo <span class="req">*</span></label>
+            <input type="text" id="titleInput" placeholder="Ej: iPhone 13 en buen estado" maxlength="100">
+            <small>Mínimo 3 caracteres, máximo 100</small>
+          </div>
+
+          <div class="form-group">
+            <label for="descriptionInput">Descripción</label>
+            <textarea id="descriptionInput" placeholder="Describe tu artículo: estado, características, motivo de venta…" maxlength="1000"></textarea>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="priceInput">Precio (MXN) <span class="req">*</span></label>
+              <input type="number" id="priceInput" placeholder="1000" min="1" max="1000000" step="1">
+            </div>
+
+            <div class="form-group">
+              <label for="categoryInput">Categoría</label>
+              <select id="categoryInput">
+                <option value="">Selecciona una categoría</option>
+                <option value="Libros">📚 Libros</option>
+                <option value="Tecnología">💻 Tecnología</option>
+                <option value="Moda">👟 Moda</option>
+                <option value="Hogar">🪑 Hogar</option>
+                <option value="Deportes">⚽ Deportes</option>
+                <option value="Juguetes">🧸 Juguetes</option>
+                <option value="Muebles">🛋️ Muebles</option>
+                <option value="Electrodomésticos">🔌 Electrodomésticos</option>
+                <option value="Belleza">💄 Belleza</option>
+                <option value="Herramientas">🔧 Herramientas</option>
+                <option value="Bicicletas">🚲 Bicicletas</option>
+                <option value="Música">🎸 Música</option>
+                <option value="Otros">📦 Otros</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="citySelect">Ciudad <span class="req">*</span></label>
+            <select id="citySelect">
+              <option value="">Selecciona tu ciudad</option>
+              <option value="Ciudad de México">Ciudad de México</option>
+              <option value="Guadalajara">Guadalajara</option>
+              <option value="Monterrey">Monterrey</option>
+              <option value="Puebla">Puebla</option>
+              <option value="Tijuana">Tijuana</option>
+              <option value="León">León</option>
+              <option value="Juárez">Ciudad Juárez</option>
+              <option value="Zapopan">Zapopan</option>
+              <option value="Mérida">Mérida</option>
+              <option value="Querétaro">Querétaro</option>
+              <option value="Cancún">Cancún</option>
+              <option value="Toluca">Toluca</option>
+              <option value="Chihuahua">Chihuahua</option>
+              <option value="Aguascalientes">Aguascalientes</option>
+              <option value="Hermosillo">Hermosillo</option>
+              <option value="Saltillo">Saltillo</option>
+              <option value="Mexicali">Mexicali</option>
+              <option value="Culiacán">Culiacán</option>
+              <option value="Morelia">Morelia</option>
+              <option value="Veracruz">Veracruz</option>
+              <option value="__other__">Otra ciudad…</option>
+            </select>
+            <input type="text" id="cityOtherInput" placeholder="Escribe tu ciudad" style="display:none; margin-top:8px;">
+          </div>
+
+          <div class="publish-actions">
+            <button type="submit" class="btn-primary" id="submitBtn">
+              <span>Publicar artículo</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+        </form>
       </div>
     </section>
 
@@ -792,19 +829,17 @@ button{cursor:pointer;border:0;background:transparent}
     <section class="page" id="page-mensajes">
       <div class="page-head">
         <div>
-          <h1 data-i18n="page_msgs_title">Mensajes</h1>
-          <p data-i18n="page_msgs_sub">Conversa con compradores y vendedores.</p>
+          <h1>Mensajes</h1>
+          <p>Conversa con compradores y vendedores.</p>
         </div>
       </div>
       <div class="card">
         <div class="empty">
           <div class="empty-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/>
-            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
           </div>
-          <h3 data-i18n="msgs_page_title">Aún no tienes conversaciones</h3>
-          <p data-i18n="msgs_page_desc">Los mensajes de compradores interesados aparecerán aquí.</p>
+          <h3>Aún no tienes conversaciones</h3>
+          <p>Los mensajes de compradores interesados aparecerán aquí.</p>
         </div>
       </div>
     </section>
@@ -813,22 +848,17 @@ button{cursor:pointer;border:0;background:transparent}
     <section class="page" id="page-favoritos">
       <div class="page-head">
         <div>
-          <h1 data-i18n="page_fav_title">Favoritos</h1>
-          <p data-i18n="page_fav_sub">Los artículos que has guardado.</p>
+          <h1>Favoritos</h1>
+          <p>Los artículos que has guardado.</p>
         </div>
       </div>
       <div class="card">
         <div class="empty">
           <div class="empty-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
           </div>
-          <h3 data-i18n="fav_page_title">Sin favoritos por ahora</h3>
-          <p data-i18n="fav_page_desc">Explora artículos y pulsa ❤️ para guardarlos aquí.</p>
-          <a href="/" class="btn-empty">
-            <span data-i18n="explore_items">Explorar artículos</span>
-          </a>
+          <h3>Sin favoritos por ahora</h3>
+          <p>Explora artículos y pulsa el corazón para guardarlos aquí.</p>
         </div>
       </div>
     </section>
@@ -837,8 +867,8 @@ button{cursor:pointer;border:0;background:transparent}
     <section class="page" id="page-perfil">
       <div class="page-head">
         <div>
-          <h1 data-i18n="page_profile_title">Mi perfil</h1>
-          <p data-i18n="page_profile_sub">Cómo te ven los demás en TRATO.</p>
+          <h1>Mi perfil</h1>
+          <p>Cómo te ven los demás en TRATO.</p>
         </div>
       </div>
 
@@ -848,28 +878,7 @@ button{cursor:pointer;border:0;background:transparent}
           <h2 id="profileName">Usuario</h2>
           <p class="meta" id="profileEmail">—</p>
           <div class="profile-badges">
-            <span class="profile-badge">📍 Guadalajara</span>
-            <span class="profile-badge" data-i18n="badge_seller">Vendedor verificado</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <h2 data-i18n="profile_stats">Estadísticas públicas</h2>
-        </div>
-        <div class="stats-grid" style="margin-bottom:0">
-          <div class="stat-card">
-            <p class="stat-value">0</p>
-            <p class="stat-label" data-i18n="stat_sales">Ventas realizadas</p>
-          </div>
-          <div class="stat-card">
-            <p class="stat-value">0</p>
-            <p class="stat-label" data-i18n="stat_active">Artículos activos</p>
-          </div>
-          <div class="stat-card">
-            <p class="stat-value">—</p>
-            <p class="stat-label" data-i18n="stat_rating">Valoración media</p>
+            <span class="profile-badge">Vendedor verificado</span>
           </div>
         </div>
       </div>
@@ -879,397 +888,59 @@ button{cursor:pointer;border:0;background:transparent}
     <section class="page" id="page-ajustes">
       <div class="page-head">
         <div>
-          <h1 data-i18n="page_settings_title">Parámetros</h1>
-          <p data-i18n="page_settings_sub">Gestiona tus preferencias y seguridad.</p>
-        </div>
-      </div>
-
-      <div class="card" style="margin-bottom:20px">
-        <div class="card-head">
-          <h2 data-i18n="settings_notifs">Notificaciones</h2>
-        </div>
-        <div class="setting-row">
-          <div class="setting-info">
-            <strong data-i18n="set_new_msg">Nuevos mensajes</strong>
-            <span data-i18n="set_new_msg_desc">Recibe un aviso cuando un comprador te escriba.</span>
-          </div>
-          <div class="setting-toggle on" role="switch" aria-checked="true" tabindex="0"></div>
-        </div>
-        <div class="setting-row">
-          <div class="setting-info">
-            <strong data-i18n="set_offers">Ofertas recibidas</strong>
-            <span data-i18n="set_offers_desc">Recibe un aviso cuando alguien haga una oferta.</span>
-          </div>
-          <div class="setting-toggle on" role="switch" aria-checked="true" tabindex="0"></div>
-        </div>
-        <div class="setting-row">
-          <div class="setting-info">
-            <strong data-i18n="set_news">Novedades TRATO</strong>
-            <span data-i18n="set_news_desc">Consejos y novedades de la plataforma.</span>
-          </div>
-          <div class="setting-toggle" role="switch" aria-checked="false" tabindex="0"></div>
+          <h1>Parámetros</h1>
+          <p>Gestiona tus preferencias y seguridad.</p>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-head">
-          <h2 data-i18n="settings_security">Seguridad</h2>
+        <div class="card-head"><h2>Notificaciones</h2></div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Nuevos mensajes</strong>
+            <span>Recibe un aviso cuando un comprador te escriba.</span>
+          </div>
+          <div class="setting-toggle on" role="switch" aria-checked="true" tabindex="0"></div>
         </div>
         <div class="setting-row">
           <div class="setting-info">
-            <strong data-i18n="set_pwd">Contraseña</strong>
-            <span data-i18n="set_pwd_desc">Cambia tu contraseña con regularidad.</span>
+            <strong>Ofertas recibidas</strong>
+            <span>Recibe un aviso cuando alguien haga una oferta.</span>
           </div>
-          <button class="filter-chip" data-i18n="change">Cambiar</button>
-        </div>
-        <div class="setting-row">
-          <div class="setting-info">
-            <strong data-i18n="set_2fa">Doble autenticación</strong>
-            <span data-i18n="set_2fa_desc">Protege tu cuenta con un código SMS.</span>
-          </div>
-          <div class="setting-toggle" role="switch" aria-checked="false" tabindex="0"></div>
+          <div class="setting-toggle on" role="switch" aria-checked="true" tabindex="0"></div>
         </div>
       </div>
     </section>
   </main>
 </div>
 
-<!-- TAB BAR MOBILE -->
-<nav class="tabbar" aria-label="Navegación móvil">
+<nav class="tabbar">
   <ul>
     <li><a href="#dashboard" data-nav="dashboard">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/>
-        <rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>
-      </svg>
-      <span data-i18n="tab_home">Inicio</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      <span>Inicio</span>
     </a></li>
     <li><a href="#articulos" data-nav="articulos">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="m7.5 4.27 9 5.15"/>
-        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
-        <path d="M12 22V12"/>
-      </svg>
-      <span data-i18n="tab_items">Artículos</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M12 22V12"/></svg>
+      <span>Artículos</span>
     </a></li>
     <li><a href="#publicar" data-nav="publicar">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/>
-      </svg>
-      <span data-i18n="tab_publish">Publicar</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+      <span>Publicar</span>
     </a></li>
     <li><a href="#mensajes" data-nav="mensajes">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/>
-      </svg>
-      <span data-i18n="tab_msgs">Mensajes</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+      <span>Mensajes</span>
     </a></li>
     <li><a href="#perfil" data-nav="perfil">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>
-      </svg>
-      <span data-i18n="tab_profile">Perfil</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+      <span>Perfil</span>
     </a></li>
   </ul>
 </nav>
 
-<script>
-/* ============================================================
-   1. CHARGER LES INFOS UTILISATEUR
-   ============================================================ */
-(function(){
-  if (typeof API === "undefined") return;
+<div class="toast" id="toast"></div>
 
-  var user = API.getUser();
-  if (!user) return;
-
-  var fullName = user.name || "Usuario";
-  var initials = fullName.split(" ").map(function(n){ return n[0] || ""; }).join("").slice(0,2).toUpperCase();
-
-  document.querySelectorAll(".avatar, .profile-avatar").forEach(function(el){
-    el.textContent = initials;
-  });
-
-  var userName = document.getElementById("userName");
-  var userEmail = document.getElementById("userEmail");
-  var profileName = document.getElementById("profileName");
-  var profileEmail = document.getElementById("profileEmail");
-
-  if (userName) userName.textContent = fullName;
-  if (userEmail) userEmail.textContent = user.email || "";
-  if (profileName) profileName.textContent = fullName;
-  if (profileEmail) profileEmail.textContent = user.email || "";
-})();
-
-/* ============================================================
-   2. TRADUCTIONS
-   ============================================================ */
-var I18N = {
-  es: {
-    search_ph:"Buscar artículos, personas…", publish:"Publicar",
-    member_since:"Vendedor desde marzo 2025",
-    menu_profile:"Mi perfil", menu_settings:"Ajustes", menu_logout:"Cerrar sesión",
-    nav_general:"General", nav_dashboard:"Vista general", nav_items:"Mis artículos",
-    nav_publish:"Publicar", nav_messages:"Mensajes", nav_favorites:"Favoritos",
-    nav_account:"Cuenta", nav_profile:"Mi perfil", nav_settings:"Parámetros", nav_logout:"Cerrar sesión",
-    page_dashboard_title:"Vista general",
-    page_dashboard_sub:"Tu actividad reciente.",
-    stat_views:"Vistas totales", stat_views_sub:"Últimos 30 días",
-    stat_items:"Artículos activos", stat_items_sub:"Publicados y visibles",
-    stat_msgs:"Mensajes recibidos", stat_msgs_sub:"Sin leer",
-    stat_sales:"Ventas realizadas", stat_sales_sub:"Desde tus inicios",
-    chart_title:"Vistas en 7 días", see_more:"Ver más",
-    chart_empty:"Publica tu primer artículo para ver tus estadísticas aquí.",
-    day_mon:"Lun", day_tue:"Mar", day_wed:"Mié", day_thu:"Jue",
-    day_fri:"Vie", day_sat:"Sáb", day_sun:"Dom",
-    recent_msgs:"Últimos mensajes", see_all:"Ver todo",
-    msgs_empty_title:"Aún no tienes mensajes",
-    msgs_empty_desc:"Publica un artículo para empezar a recibir mensajes.",
-    publish_first:"Publicar mi primer artículo",
-    recent_items:"Artículos recientes",
-    items_empty_title:"Aún no has publicado nada",
-    items_empty_desc:"Tus artículos aparecerán aquí en cuanto publiques el primero.",
-    activity_title:"Actividad reciente",
-    activity_empty_title:"Aún no hay actividad",
-    activity_empty_desc:"Tu historial se mostrará aquí.",
-    tips_title:"Consejos para vender más rápido",
-    tip1_title:"Toma buenas fotos",
-    tip1_desc:"Un artículo con 3 fotos o más se vende 2× más rápido.",
-    tip2_title:"Fija un precio justo",
-    tip2_desc:"Mira artículos similares cerca de ti para encontrar el precio correcto.",
-    tip3_title:"Responde rápido",
-    tip3_desc:"Los vendedores que responden en menos de 1 h tienen 3× más probabilidades de cerrar.",
-    page_items_title:"Mis artículos",
-    page_items_sub:"Gestiona tus anuncios publicados, en borrador o vendidos.",
-    new_item:"Nuevo artículo",
-    filter_all:"Todos", filter_active:"Publicados", filter_draft:"Borradores", filter_sold:"Vendidos",
-    items_page_empty_title:"Todavía no has publicado nada",
-    items_page_empty_desc:"Publica tu primer artículo y empieza a ganar dinero hoy mismo.",
-    page_publish_title:"Publicar un artículo",
-    page_publish_sub:"Con unos datos basta para empezar a vender.",
-    publish_page_title:"El formulario de publicación llegará pronto",
-    publish_page_desc:"Esta sección te permitirá añadir una foto, un precio y una descripción.",
-    back_dashboard:"Volver a la vista general",
-    page_msgs_title:"Mensajes",
-    page_msgs_sub:"Conversa con compradores y vendedores.",
-    msgs_page_title:"Aún no tienes conversaciones",
-    msgs_page_desc:"Los mensajes de compradores interesados aparecerán aquí.",
-    page_fav_title:"Favoritos", page_fav_sub:"Los artículos que has guardado.",
-    fav_page_title:"Sin favoritos por ahora",
-    fav_page_desc:"Explora artículos y pulsa el corazón para guardarlos aquí.",
-    explore_items:"Explorar artículos",
-    page_profile_title:"Mi perfil", page_profile_sub:"Cómo te ven los demás en TRATO.",
-    badge_seller:"Vendedor verificado", edit_profile:"Editar",
-    profile_stats:"Estadísticas públicas", stat_active:"Artículos activos", stat_rating:"Valoración media",
-    page_settings_title:"Parámetros", page_settings_sub:"Gestiona tus preferencias y seguridad.",
-    settings_notifs:"Notificaciones",
-    set_new_msg:"Nuevos mensajes", set_new_msg_desc:"Recibe un aviso cuando un comprador te escriba.",
-    set_offers:"Ofertas recibidas", set_offers_desc:"Recibe un aviso cuando alguien haga una oferta.",
-    set_news:"Novedades TRATO", set_news_desc:"Consejos y novedades de la plataforma.",
-    settings_security:"Seguridad",
-    set_pwd:"Contraseña", set_pwd_desc:"Cambia tu contraseña con regularidad.", change:"Cambiar",
-    set_2fa:"Doble autenticación", set_2fa_desc:"Protege tu cuenta con un código SMS.",
-    tab_home:"Inicio", tab_items:"Artículos", tab_publish:"Publicar", tab_msgs:"Mensajes", tab_profile:"Perfil"
-  },
-  en: {
-    search_ph:"Search items, people…", publish:"Publish",
-    member_since:"Seller since March 2025",
-    menu_profile:"My profile", menu_settings:"Settings", menu_logout:"Sign out",
-    nav_general:"General", nav_dashboard:"Overview", nav_items:"My listings",
-    nav_publish:"Publish", nav_messages:"Messages", nav_favorites:"Favorites",
-    nav_account:"Account", nav_profile:"My profile", nav_settings:"Settings", nav_logout:"Sign out",
-    page_dashboard_title:"Overview",
-    page_dashboard_sub:"Your recent activity.",
-    stat_views:"Total views", stat_views_sub:"Last 30 days",
-    stat_items:"Active listings", stat_items_sub:"Published & visible",
-    stat_msgs:"Messages received", stat_msgs_sub:"Unread",
-    stat_sales:"Sales completed", stat_sales_sub:"Since you started",
-    chart_title:"Views over 7 days", see_more:"See more",
-    chart_empty:"Publish your first listing to see your stats here.",
-    day_mon:"Mon", day_tue:"Tue", day_wed:"Wed", day_thu:"Thu",
-    day_fri:"Fri", day_sat:"Sat", day_sun:"Sun",
-    recent_msgs:"Recent messages", see_all:"See all",
-    msgs_empty_title:"No messages yet",
-    msgs_empty_desc:"Publish a listing to start receiving messages.",
-    publish_first:"Publish my first listing",
-    recent_items:"Recent listings",
-    items_empty_title:"You haven't published anything yet",
-    items_empty_desc:"Your listings will appear here as soon as you publish one.",
-    activity_title:"Recent activity",
-    activity_empty_title:"No activity yet",
-    activity_empty_desc:"Your history will appear here.",
-    tips_title:"Tips to sell faster",
-    tip1_title:"Take good photos",
-    tip1_desc:"A listing with 3 photos or more sells 2× faster.",
-    tip2_title:"Set a fair price",
-    tip2_desc:"Check similar listings near you to find the right price.",
-    tip3_title:"Reply quickly",
-    tip3_desc:"Sellers who reply in under 1 hour are 3× more likely to close a deal.",
-    page_items_title:"My listings",
-    page_items_sub:"Manage your published, draft or sold items.",
-    new_item:"New listing",
-    filter_all:"All", filter_active:"Published", filter_draft:"Drafts", filter_sold:"Sold",
-    items_page_empty_title:"You haven't published anything yet",
-    items_page_empty_desc:"Publish your first listing and start making money today.",
-    page_publish_title:"Publish a listing",
-    page_publish_sub:"A few details are enough to start selling.",
-    publish_page_title:"The publish form is coming soon",
-    publish_page_desc:"This section will let you add a photo, a price and a description.",
-    back_dashboard:"Back to overview",
-    page_msgs_title:"Messages",
-    page_msgs_sub:"Chat with buyers and sellers.",
-    msgs_page_title:"No conversations yet",
-    msgs_page_desc:"Messages from interested buyers will appear here.",
-    page_fav_title:"Favorites", page_fav_sub:"Listings you saved.",
-    fav_page_title:"No favorites yet",
-    fav_page_desc:"Browse listings and tap the heart to save them here.",
-    explore_items:"Browse listings",
-    page_profile_title:"My profile", page_profile_sub:"How others see you on TRATO.",
-    badge_seller:"Verified seller", edit_profile:"Edit",
-    profile_stats:"Public stats", stat_active:"Active listings", stat_rating:"Average rating",
-    page_settings_title:"Settings", page_settings_sub:"Manage your preferences and security.",
-    settings_notifs:"Notifications",
-    set_new_msg:"New messages", set_new_msg_desc:"Get an alert when a buyer messages you.",
-    set_offers:"Incoming offers", set_offers_desc:"Get an alert when someone makes an offer.",
-    set_news:"TRATO news", set_news_desc:"Tips and platform updates.",
-    settings_security:"Security",
-    set_pwd:"Password", set_pwd_desc:"Change your password regularly.", change:"Change",
-    set_2fa:"Two-factor authentication", set_2fa_desc:"Protect your account with an SMS code.",
-    tab_home:"Home", tab_items:"Listings", tab_publish:"Publish", tab_msgs:"Messages", tab_profile:"Profile"
-  }
-};
-
-var currentLang = "es";
-
-function t(key){
-  return (I18N[currentLang] && I18N[currentLang][key]) || key;
-}
-
-function applyLang(lang){
-  currentLang = lang;
-  document.documentElement.lang = lang === "es" ? "es-MX" : "en";
-
-  document.querySelectorAll("[data-i18n]").forEach(function(el){
-    el.textContent = t(el.getAttribute("data-i18n"));
-  });
-  document.querySelectorAll("[data-i18n-ph]").forEach(function(el){
-    el.placeholder = t(el.getAttribute("data-i18n-ph"));
-  });
-  document.querySelectorAll(".lang-toggle button").forEach(function(btn){
-    btn.setAttribute("aria-pressed", btn.dataset.lang === lang ? "true" : "false");
-  });
-}
-
-document.querySelectorAll(".lang-toggle button").forEach(function(btn){
-  btn.addEventListener("click", function(){ applyLang(btn.dataset.lang); });
-});
-
-/* ============================================================
-   3. NAVIGATION PAR HASH
-   ============================================================ */
-var VALID_PAGES = ["dashboard","articulos","publicar","mensajes","favoritos","perfil","ajustes"];
-
-function gotoPage(page){
-  if (VALID_PAGES.indexOf(page) === -1) page = "dashboard";
-
-  document.querySelectorAll(".page").forEach(function(p){
-    p.classList.toggle("active", p.id === "page-" + page);
-  });
-  document.querySelectorAll(".nav-link").forEach(function(a){
-    a.classList.toggle("active", a.dataset.nav === page);
-  });
-  document.querySelectorAll(".tabbar a").forEach(function(a){
-    a.classList.toggle("active", a.dataset.nav === page);
-  });
-  window.scrollTo({top:0, behavior:"auto"});
-}
-
-function handleHash(){
-  var hash = (location.hash || "#dashboard").replace("#","");
-  gotoPage(hash);
-}
-
-window.addEventListener("hashchange", handleHash);
-window.addEventListener("DOMContentLoaded", handleHash);
-
-document.querySelectorAll("[data-nav]").forEach(function(a){
-  a.addEventListener("click", function(e){
-    var target = a.dataset.nav;
-    if (VALID_PAGES.indexOf(target) !== -1){
-      e.preventDefault();
-      if (location.hash === "#" + target){
-        handleHash();
-      } else {
-        location.hash = "#" + target;
-      }
-    }
-  });
-});
-
-/* ============================================================
-   4. MENU AVATAR
-   ============================================================ */
-var avatarBtn = document.getElementById("avatarBtn");
-var avatarMenu = document.getElementById("avatarMenu");
-
-avatarBtn.addEventListener("click", function(e){
-  e.stopPropagation();
-  avatarMenu.classList.toggle("open");
-});
-avatarBtn.addEventListener("keydown", function(e){
-  if (e.key === "Enter" || e.key === " "){
-    e.preventDefault();
-    avatarMenu.classList.toggle("open");
-  }
-});
-document.addEventListener("click", function(){ avatarMenu.classList.remove("open"); });
-avatarMenu.addEventListener("click", function(e){ e.stopPropagation(); });
-
-/* ============================================================
-   5. DÉCONNEXION
-   ============================================================ */
-function handleLogout(e){
-  e.preventDefault();
-  if (typeof API !== "undefined") API.logout();
-  window.location.href = "/login.html";
-}
-
-var logoutBtn = document.getElementById("logoutBtn");
-var logoutBtnSidebar = document.getElementById("logoutBtnSidebar");
-if (logoutBtn) logoutBtn.addEventListener("click", handleLogout);
-if (logoutBtnSidebar) logoutBtnSidebar.addEventListener("click", handleLogout);
-
-/* ============================================================
-   6. TOGGLES
-   ============================================================ */
-document.querySelectorAll(".setting-toggle").forEach(function(tg){
-  function toggle(){
-    tg.classList.toggle("on");
-    tg.setAttribute("aria-checked", tg.classList.contains("on") ? "true" : "false");
-  }
-  tg.addEventListener("click", toggle);
-  tg.addEventListener("keydown", function(e){
-    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
-  });
-});
-
-/* ============================================================
-   7. FILTRES
-   ============================================================ */
-document.querySelectorAll(".filter-chip").forEach(function(chip){
-  chip.addEventListener("click", function(){
-    var parent = chip.closest(".filters");
-    if (!parent) return;
-    parent.querySelectorAll(".filter-chip").forEach(function(c){ c.classList.remove("active"); });
-    chip.classList.add("active");
-  });
-});
-
-/* ============================================================
-   8. INIT LANG
-   ============================================================ */
-applyLang("es");
-</script>
-
+<script src="/assets/dashboard.js"></script>
 </body>
 </html>

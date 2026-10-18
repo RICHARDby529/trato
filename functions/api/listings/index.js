@@ -1,14 +1,35 @@
 import { getUserId, json, error } from '../../_utils.js';
 
-// GET /api/listings → tous les articles (public)
-// POST /api/listings → créer un article (protégé)
+// GET /api/listings         → tous les articles actifs (public)
+// GET /api/listings?mine=1  → mes articles (protégé)
+// POST /api/listings        → créer un article (protégé)
 
 export async function onRequestGet(context){
-  const { env } = context;
+  const { request, env } = context;
+  const url = new URL(request.url);
+  const mine = url.searchParams.get("mine") === "1";
 
   try {
-    const listings = await env.DB
-      .prepare(`
+    let query, params = [];
+
+    if (mine){
+      // Vérifier l'utilisateur connecté
+      const userId = await getUserId(request, env);
+      if (!userId) return error('Non authentifié', 401);
+
+      query = `
+        SELECT 
+          l.id, l.title, l.description, l.price, l.category, l.city, l.status, l.created_at,
+          l.user_id,
+          (SELECT json_group_array(url) FROM listing_images WHERE listing_id = l.id) AS images
+        FROM listings l
+        WHERE l.user_id = ?
+        ORDER BY l.created_at DESC
+        LIMIT 50
+      `;
+      params = [userId];
+    } else {
+      query = `
         SELECT 
           l.id, l.title, l.description, l.price, l.category, l.city, l.status, l.created_at,
           l.user_id,
@@ -19,9 +40,10 @@ export async function onRequestGet(context){
         WHERE l.status = 'active'
         ORDER BY l.created_at DESC
         LIMIT 50
-      `)
-      .all();
+      `;
+    }
 
+    const listings = await env.DB.prepare(query).bind(...params).all();
     return json({ success: true, listings: listings.results });
 
   } catch (err){
