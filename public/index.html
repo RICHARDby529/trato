@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRATO</title>
+  <meta http-equiv="refresh" content="0; url=/login.html">
+</head>
+<body>
+  <script>
+    // Si connecté → dashboard, sinon → login
+    var token = localStorage.getItem('trato_token');
+    if (token){
+      window.location.replace('/dashboard.html');
+    } else {
+      window.location.replace('/login.html');
+    }
+  </script>
+  <noscript>
+    <p>Redirigiendo… <a href="/login.html">Haz clic aquí si no funciona</a></p>
+  </noscript>
+</body>
+</html>
