@@ -44,7 +44,26 @@ export async function onRequestGet(context){
     }
 
     const listings = await env.DB.prepare(query).bind(...params).all();
-    return json({ success: true, listings: listings.results });
+
+    // Parser les images proprement (SQLite renvoie parfois une chaîne JSON)
+    const cleanedListings = listings.results.map(function(item){
+      var imgs = item.images;
+
+      // Si c'est une chaîne JSON
+      if (typeof imgs === "string"){
+        try { imgs = JSON.parse(imgs); } catch (e){ imgs = []; }
+      }
+
+      // Si c'est un tableau à un seul élément qui est une chaîne JSON
+      if (Array.isArray(imgs) && imgs.length === 1 && typeof imgs[0] === "string" && imgs[0].startsWith("[")){
+        try { imgs = JSON.parse(imgs[0]); } catch (e){}
+      }
+
+      item.images = Array.isArray(imgs) ? imgs : [];
+      return item;
+    });
+
+    return json({ success: true, listings: cleanedListings });
 
   } catch (err){
     return error('Erreur : ' + err.message, 500);

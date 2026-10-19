@@ -176,17 +176,14 @@ function handleFiles(files){
     return;
   }
 
-  var rejected = 0;
   var added = 0;
 
   filesArr.forEach(function(file){
     if (!file.type.startsWith("image/")){
-      rejected++;
       return;
     }
     if (file.size > MAX_SIZE){
       showToast("La imagen " + file.name + " es demasiado grande (máx 5 MB)", true);
-      rejected++;
       return;
     }
     selectedImages.push(file);
@@ -258,7 +255,6 @@ if (publishForm && submitBtn){
     var category = document.getElementById("categoryInput").value;
     var city = citySelect.value === "__other__" ? cityOtherInput.value.trim() : citySelect.value;
 
-    // Validations
     if (selectedImages.length === 0){
       return showToast("Añade al menos una foto del artículo", true);
     }
@@ -278,17 +274,14 @@ if (publishForm && submitBtn){
       return showToast("Selecciona o escribe tu ciudad", true);
     }
 
-    // Loading state
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner"></span><span>Subiendo imágenes…</span>';
 
     try {
-      // 1. Upload images
       var uploadResult = await API.uploadImages(selectedImages);
 
       submitBtn.innerHTML = '<span class="spinner"></span><span>Publicando artículo…</span>';
 
-      // 2. Create listing
       await API.createListing({
         title: title,
         description: description,
@@ -298,10 +291,8 @@ if (publishForm && submitBtn){
         images: uploadResult.urls
       });
 
-      // 3. Success
       showToast("¡Artículo publicado con éxito!");
 
-      // Reset
       publishForm.reset();
       selectedImages = [];
       renderPreviews();
@@ -310,11 +301,9 @@ if (publishForm && submitBtn){
         cityOtherInput.value = "";
       }
 
-      // Reset button
       submitBtn.disabled = false;
       submitBtn.innerHTML = '<span>Publicar artículo</span><span aria-hidden="true">→</span>';
 
-      // Go to My items
       setTimeout(function(){
         location.hash = "#articulos";
       }, 800);
@@ -328,7 +317,42 @@ if (publishForm && submitBtn){
 }
 
 /* ============================================================
-   10. CHARGER MES ARTICLES
+   10. UTILS — extraire proprement les URLs d'images
+   ============================================================ */
+function extractImageUrls(images){
+  if (!images) return [];
+
+  // Cas 1 : c'est une chaîne JSON
+  if (typeof images === "string"){
+    try {
+      var parsed = JSON.parse(images);
+      // Si après parsing c'est encore une chaîne (double encodage)
+      if (typeof parsed === "string"){
+        try { parsed = JSON.parse(parsed); } catch (e){}
+      }
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e){
+      return [];
+    }
+  }
+
+  // Cas 2 : c'est déjà un tableau
+  if (Array.isArray(images)){
+    // Vérifier si c'est un tableau à un seul élément qui est une chaîne JSON
+    if (images.length === 1 && typeof images[0] === "string" && images[0].startsWith("[")){
+      try {
+        var inner = JSON.parse(images[0]);
+        return Array.isArray(inner) ? inner : [];
+      } catch (e){}
+    }
+    return images;
+  }
+
+  return [];
+}
+
+/* ============================================================
+   11. CHARGER MES ARTICLES
    ============================================================ */
 async function loadMyItems(){
   var emptyEl = document.getElementById("myItemsEmpty");
@@ -350,7 +374,8 @@ async function loadMyItems(){
     gridEl.innerHTML = "";
 
     listings.forEach(function(item){
-      var imgUrl = (item.images && item.images.length && item.images[0]) ? item.images[0] : "";
+      var urls = extractImageUrls(item.images);
+      var imgUrl = urls.length > 0 ? urls[0] : "";
       var price = parseFloat(item.price).toLocaleString("es-MX");
       var card = document.createElement("div");
       card.className = "article-card";
@@ -367,7 +392,6 @@ async function loadMyItems(){
       gridEl.appendChild(card);
     });
 
-    // Update stat
     var statItems = document.getElementById("statItems");
     if (statItems) statItems.textContent = listings.length;
 
@@ -377,7 +401,7 @@ async function loadMyItems(){
 }
 
 /* ============================================================
-   11. CHARGER ARTICLES RÉCENTS (dashboard)
+   12. CHARGER ARTICLES RÉCENTS (dashboard)
    ============================================================ */
 async function loadRecentItems(){
   var emptyEl = document.getElementById("recentItemsEmpty");
@@ -399,7 +423,8 @@ async function loadRecentItems(){
     gridEl.innerHTML = "";
 
     listings.forEach(function(item){
-      var imgUrl = (item.images && item.images.length && item.images[0]) ? item.images[0] : "";
+      var urls = extractImageUrls(item.images);
+      var imgUrl = urls.length > 0 ? urls[0] : "";
       var price = parseFloat(item.price).toLocaleString("es-MX");
       var card = document.createElement("div");
       card.className = "article-card";
@@ -412,7 +437,6 @@ async function loadRecentItems(){
       gridEl.appendChild(card);
     });
 
-    // Update stat
     var statItems = document.getElementById("statItems");
     if (statItems) statItems.textContent = listings.length;
 
@@ -422,7 +446,7 @@ async function loadRecentItems(){
 }
 
 /* ============================================================
-   12. UTILS
+   13. UTILS — échapper HTML
    ============================================================ */
 function escapeHtml(str){
   if (!str) return "";
@@ -432,7 +456,7 @@ function escapeHtml(str){
 }
 
 /* ============================================================
-   13. INIT
+   14. INIT
    ============================================================ */
 window.addEventListener("load", function(){
   loadRecentItems();
