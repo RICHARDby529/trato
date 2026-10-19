@@ -488,6 +488,19 @@ button{cursor:pointer;border:0;background:transparent}
   .form-row-2{grid-template-columns:1fr}
   .publish-actions{justify-content:stretch}
   .publish-actions button{width:100%;justify-content:center}
+
+  /* ✅ NOUVEAU — Grille 2 colonnes sur mobile */
+  .article-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  /* ✅ NOUVEAU — Réduire la taille du texte dans les cartes mobile */
+  .article-card-body{padding:10px}
+  .article-card-body h3{font-size:.85rem;line-height:1.25}
+  .article-card-price{font-size:1.05rem;margin:4px 0 4px}
+  .article-card-meta{font-size:.7rem;gap:4px}
+  .article-card-meta .badge{font-size:.62rem;padding:2px 6px}
 }
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{animation-duration:.001ms!important;transition:none!important}
