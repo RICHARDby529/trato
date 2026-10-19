@@ -347,20 +347,35 @@ button{cursor:pointer;border:0;background:transparent}
   border-radius:50%;animation:spin .7s linear infinite;display:inline-block;
 }
 
-/* Articles grid */
+/* ============================================================
+   ARTICLES GRID — FORMAT PORTRAIT (PHOTO TÉLÉPHONE)
+   ============================================================ */
 .article-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
   gap:18px;
 }
 .article-card{
-  background:var(--card);border:1px solid var(--line);border-radius:16px;
-  overflow:hidden;transition:.25s;animation:fadeUp .4s ease both;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  transition:.25s;
+  animation:fadeUp .4s ease both;
 }
 .article-card:hover{
-  border-color:#C8DED5;transform:translateY(-3px);box-shadow:var(--shadow-sm);
+  border-color:#C8DED5;
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-sm);
 }
 .article-card-img{
-  width:100%;height:180px;object-fit:cover;background:var(--mint-2);display:block;
+  width:100%;
+  aspect-ratio: 3 / 4;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+  background:var(--mint-2);
+  display:block;
 }
 .article-card-body{padding:16px}
 .article-card-body h3{
