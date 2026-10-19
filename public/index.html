@@ -316,9 +316,7 @@ h2{font:800 clamp(2.2rem,5vw,4rem)/.98 var(--display);letter-spacing:-.04em;marg
 .step h3{margin:0 0 7px;font:800 1.35rem var(--display)}
 .step p{margin:0;color:var(--muted)}
 
-/* ============================================================
-   SECTION ARTICLES PUBLIÉS
-   ============================================================ */
+/* LISTINGS */
 .listings-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
@@ -510,51 +508,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
 
 <body>
 
-<!-- Client API -->
 <script src="/assets/api.js"></script>
-
-<!-- Adaptation selon connexion -->
-<script>
-(function(){
-  document.addEventListener('DOMContentLoaded', function(){
-    var isLogged = (typeof API !== 'undefined') && API.isLoggedIn();
-    var user = isLogged ? API.getUser() : null;
-    
-    // Bouton "Compte" dans le header
-    var accountBtn = document.getElementById('accountBtn');
-    if (accountBtn){
-      if (isLogged && user){
-        accountBtn.textContent = (user.name || 'Mi cuenta').split(' ')[0];
-        accountBtn.href = '/dashboard.html';
-      } else {
-        accountBtn.textContent = 'Crear cuenta';
-        accountBtn.href = '/login.html';
-      }
-    }
-    
-    // CTA principal
-    var ctaBtn = document.getElementById('ctaBtn');
-    if (ctaBtn){
-      ctaBtn.href = isLogged ? '/dashboard.html#publicar' : '/login.html';
-      ctaBtn.textContent = isLogged ? 'Publicar un artículo →' : 'Empezar ahora →';
-    }
-    
-    // Bouton "Explorar"
-    var exploreBtn = document.getElementById('exploreBtn');
-    if (exploreBtn){
-      exploreBtn.href = isLogged ? '/dashboard.html#articulos' : '#listings';
-    }
-  });
-})();
-</script>
 
 <header>
   <div class="wrap">
     <nav aria-label="Principal">
       <a class="logo" href="#">TRATO<span>.</span></a>
       <div class="links">
-        <a href="#categorias">Categorías</a>
         <a href="#listings">Explorar</a>
+        <a href="#categorias">Categorías</a>
         <a id="accountBtn" class="btn" href="/login.html">Crear cuenta</a>
       </div>
     </nav>
@@ -623,31 +585,33 @@ footer .wrap{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
 
 <main>
 
-  <!-- CATÉGORIES -->
-  <section id="categorias">
+  <!-- ✅ SECTION 1 : ARTICLES PUBLIÉS (déplacée en premier) -->
+  <section id="listings">
     <div class="wrap">
-      <div class="kicker">Explora</div>
-      <h2>Encuentra algo que te guste.</h2>
-      <p class="lead">Categorías rápidas para llegar a lo que buscas sin perder tiempo.</p>
+      <div class="kicker">Marketplace</div>
+      <h2>Lo que se vende hoy.</h2>
+      <p class="lead">Artículos publicados por la comunidad de TRATO.</p>
 
-      <div class="category-row">
-        <a class="category" href="#listings" data-category="libros">
-          <span class="emoji">📚</span><strong>Libros</strong><span>Estudio y lectura</span>
-        </a>
-        <a class="category" href="#listings" data-category="tech">
-          <span class="emoji">💻</span><strong>Tecnología</strong><span>Equipos y accesorios</span>
-        </a>
-        <a class="category" href="#listings" data-category="ropa">
-          <span class="emoji">👟</span><strong>Moda</strong><span>Ropa y calzado</span>
-        </a>
-        <a class="category" href="#listings" data-category="hogar">
-          <span class="emoji">🪑</span><strong>Hogar</strong><span>Para tu espacio</span>
+      <div id="listingsGrid" class="listings-grid" style="display:none;"></div>
+
+      <div id="listingsEmpty" class="listings-empty">
+        <div class="listings-empty-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m7.5 4.27 9 5.15"/>
+            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+            <path d="M12 22V12"/>
+          </svg>
+        </div>
+        <h3>Aún no hay artículos publicados</h3>
+        <p>Sé el primero en publicar algo y empieza a ganar dinero hoy mismo.</p>
+        <a id="emptyCta" class="btn" href="/login.html" style="background:var(--green)">
+          Publicar mi primer artículo
         </a>
       </div>
     </div>
   </section>
 
-  <!-- COMMENT ÇA MARCHE -->
+  <!-- SECTION 2 : COMMENT ÇA MARCHE (inchangé, au milieu) -->
   <section id="como" style="padding-top:15px">
     <div class="wrap">
       <div class="kicker">Así funciona</div>
@@ -671,27 +635,25 @@ footer .wrap{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
     </div>
   </section>
 
-  <!-- ✅ NOUVELLE SECTION : ARTICLES PUBLIÉS -->
-  <section id="listings">
+  <!-- ✅ SECTION 3 : CATÉGORIES (déplacée en dernier) -->
+  <section id="categorias">
     <div class="wrap">
-      <div class="kicker">Marketplace</div>
-      <h2>Lo que se vende hoy.</h2>
-      <p class="lead">Artículos publicados por la comunidad de TRATO.</p>
+      <div class="kicker">Explora</div>
+      <h2>Encuentra algo que te guste.</h2>
+      <p class="lead">Categorías rápidas para llegar a lo que buscas sin perder tiempo.</p>
 
-      <div id="listingsGrid" class="listings-grid" style="display:none;"></div>
-
-      <div id="listingsEmpty" class="listings-empty">
-        <div class="listings-empty-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m7.5 4.27 9 5.15"/>
-            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
-            <path d="M12 22V12"/>
-          </svg>
-        </div>
-        <h3>Aún no hay artículos publicados</h3>
-        <p>Sé el primero en publicar algo y empieza a ganar dinero hoy mismo.</p>
-        <a id="emptyCta" class="btn" href="/login.html" style="background:var(--green)">
-          Publicar mi primer artículo
+      <div class="category-row">
+        <a class="category" href="#listings" data-category="libros">
+          <span class="emoji">📚</span><strong>Libros</strong><span>Estudio y lectura</span>
+        </a>
+        <a class="category" href="#listings" data-category="tech">
+          <span class="emoji">💻</span><strong>Tecnología</strong><span>Equipos y accesorios</span>
+        </a>
+        <a class="category" href="#listings" data-category="ropa">
+          <span class="emoji">👟</span><strong>Moda</strong><span>Ropa y calzado</span>
+        </a>
+        <a class="category" href="#listings" data-category="hogar">
+          <span class="emoji">🪑</span><strong>Hogar</strong><span>Para tu espacio</span>
         </a>
       </div>
     </div>
@@ -817,7 +779,6 @@ async function loadListings(){
     var data = await res.json();
     var listings = data.listings || [];
 
-    // Adapter les boutons si connecté
     var isLogged = (typeof API !== 'undefined') && API.isLoggedIn();
     var emptyCta = document.getElementById('emptyCta');
     if (emptyCta){
@@ -834,7 +795,6 @@ async function loadListings(){
     grid.style.display = "grid";
     grid.innerHTML = "";
 
-    // Afficher seulement les 8 premiers
     listings.slice(0, 8).forEach(function(item){
       var urls = extractImageUrls(item.images);
       var imgUrl = urls.length > 0 ? urls[0] : "";
@@ -880,7 +840,7 @@ function scrollToListings(){
 }
 
 /* ============================================================
-   4. FILTRER PAR CATÉGORIE (scroll vers articles)
+   4. CATÉGORIES → scroll vers articles
    ============================================================ */
 document.querySelectorAll('.category').forEach(function(cat){
   cat.addEventListener('click', function(e){
