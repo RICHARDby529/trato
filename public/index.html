@@ -1,23 +1,943 @@
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TRATO</title>
-  <meta http-equiv="refresh" content="0; url=/login.html">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#071A14">
+<meta name="description" content="TRATO — Marketplace mexicano para comprar, vender y hacer trato.">
+<title>TRATO — Compra, vende y haz trato</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --green:#064E3B;
+  --green-2:#0B6B50;
+  --deep:#061B15;
+  --ink:#08251C;
+  --mint:#D8F7E8;
+  --mint-2:#EFFBF5;
+  --sun:#CE1126;
+  --sun-soft:#E63946;
+  --bg:#F6FAF8;
+  --card:#FFFFFF;
+  --text:#0B2A20;
+  --muted:#60756C;
+  --line:#D9E8E1;
+  --shadow:0 18px 50px rgba(4,40,29,.10);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font:400 16px/1.6 var(--body);overflow-x:hidden
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:999;
+  background:radial-gradient(circle at 15% 10%,rgba(206,17,38,.06),transparent 28%),
+             radial-gradient(circle at 90% 50%,rgba(6,78,59,.05),transparent 30%);
+}
+a{color:inherit}
+button,input{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.wrap{max-width:1180px;margin:auto;padding:0 24px}
+
+/* NAV */
+header{position:relative;background:var(--deep);color:#fff;overflow:hidden}
+header:after{
+  content:"";position:absolute;width:620px;height:620px;right:-240px;top:-300px;
+  background:radial-gradient(circle,rgba(206,17,38,.20),transparent 68%);
+  pointer-events:none
+}
+nav{
+  position:relative;z-index:4;display:flex;align-items:center;
+  justify-content:space-between;padding:22px 0
+}
+.logo{
+  font:800 1.65rem var(--display);letter-spacing:-.03em;text-decoration:none
+}
+.logo span{color:var(--sun)}
+.links{display:flex;gap:28px;align-items:center}
+.links a{text-decoration:none;font-weight:600;color:#DDEBE5}
+.links a:hover{color:#fff}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:0;border-radius:999px;padding:13px 20px;
+  font:700 .95rem var(--body);cursor:pointer;text-decoration:none;
+  background:var(--sun);color:#fff;transition:.25s ease
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(206,17,38,.28)}
+.btn.alt{background:rgba(255,255,255,.08);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+.btn.alt:hover{background:rgba(255,255,255,.14)}
+
+/* HERO */
+.hero{position:relative;z-index:2;padding:30px 0 105px}
+.hero-grid{
+  display:grid;grid-template-columns:minmax(0,1.04fr) minmax(360px,.96fr);
+  gap:54px;align-items:center
+}
+
+/* BARRE DE RECHERCHE */
+.search{
+  display:flex;
+  width:100%;
+  max-width:600px;
+  padding:7px;
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 18px 45px rgba(0,0,0,.20);
+  margin:0 0 22px;
+}
+.search input{min-width:0;flex:1;border:0;outline:0;padding:0 15px;color:var(--ink);background:transparent}
+.search button{border:0;background:var(--green);color:#fff;border-radius:13px;padding:12px 19px;font-weight:700}
+
+/* TITRE CONTENEUR ARRONDI */
+.hero h1{
+  margin:0 0 22px;
+  display:block;
+  width:100%;
+  max-width:600px;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  padding:26px 34px;
+  border-radius:26px;
+  font:800 clamp(1.7rem,3.4vw,2.9rem)/1.06 var(--display);
+  letter-spacing:-.03em;
+  color:#fff;
+  box-shadow:
+    0 25px 60px rgba(0,0,0,.32),
+    inset 0 0 0 1px rgba(255,255,255,.14);
+}
+.hero h1::before{
+  content:"";
+  position:absolute;inset:0;z-index:-2;
+  background-image:
+    linear-gradient(135deg, rgba(6,78,59,.88), rgba(2,20,14,.70)),
+    url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=80');
+  background-size:cover;
+  background-position:center;
+  animation:kenburns 22s ease-in-out infinite alternate;
+}
+.hero h1::after{
+  content:"";
+  position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.18) 100%);
+  pointer-events:none;
+}
+@keyframes kenburns{
+  from{transform:scale(1) translate(0,0)}
+  to{transform:scale(1.14) translate(-2%,-2%)}
+}
+.hero h1 span{
+  display:block;
+  opacity:1;
+  transform:none;
+  animation:rise .7s cubic-bezier(.2,.8,.2,1) both;
+  text-shadow:0 6px 22px rgba(0,0,0,.35);
+}
+.hero h1 span:nth-child(2){animation-delay:.10s}
+.hero h1 span:nth-child(3){animation-delay:.20s;color:var(--sun)}
+@keyframes rise{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* DESCRIPTION */
+.hero-copy{
+  max-width:570px;
+  color:#C9DED6;
+  font-size:1.12rem;
+  line-height:1.65;
+}
+.hero-copy .highlight{
+  color:var(--sun-soft);
+  font-weight:800;
+  letter-spacing:-.01em;
+}
+
+/* CTA-CARD */
+.cta-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  width:100%;
+  max-width:600px;
+  margin-top:24px;
+  padding:18px 20px;
+  background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:22px;
+  backdrop-filter:blur(12px);
+  box-shadow:
+    0 22px 50px rgba(0,0,0,.28),
+    inset 0 0 0 1px rgba(255,255,255,.06);
+  transition:.3s ease;
+}
+.cta-card:hover{
+  border-color:rgba(206,17,38,.55);
+  box-shadow:
+    0 25px 60px rgba(0,0,0,.34),
+    0 0 0 1px rgba(206,17,38,.25),
+    inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.cta-card p{
+  margin:0;
+  font:700 1.05rem/1.3 var(--display);
+  color:#fff;
+  letter-spacing:-.015em;
+}
+.cta-card .highlight{
+  color:var(--sun-soft);
+  font-weight:800;
+}
+.cta-card .btn{
+  flex:0 0 auto;
+  padding:12px 18px;
+  font-size:.92rem;
+  background:var(--sun);
+  color:#fff;
+  box-shadow:0 10px 24px rgba(206,17,38,.32);
+}
+.cta-card .btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px rgba(206,17,38,.45);
+}
+
+/* HERO VISUAL */
+.visual{position:relative;min-height:485px}
+.video-card{
+  position:absolute;inset:0 0 0 20px;border-radius:30px;overflow:hidden;
+  background:linear-gradient(145deg,#0A4C39,#02130E);
+  box-shadow:0 35px 90px rgba(0,0,0,.34);
+  transform:rotate(1.5deg);
+}
+.video-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 30%;
+  display:block;
+  filter:saturate(1.05) contrast(1.05);
+  animation:imgKenburns 26s ease-in-out infinite alternate;
+  will-change:transform;
+}
+@keyframes imgKenburns{
+  from{transform:scale(1.02) translate(0,0)}
+  to{transform:scale(1.14) translate(-2%,-2%)}
+}
+.video-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(2,20,14,.05),rgba(2,20,14,.55))
+}
+
+/* CARTES FLOTTANTES */
+.floating{
+  position:absolute;z-index:3;
+  background:rgba(255,255,255,.96);color:var(--ink);
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:0 18px 45px rgba(0,0,0,.20);
+  border-radius:18px;padding:13px 15px;
+  backdrop-filter:blur(10px);
+  will-change:transform,box-shadow;
+}
+.float-a{left:-8px;top:52px}
+.float-b{right:-20px;bottom:54px}
+.float-row{display:flex;align-items:center;gap:10px}
+.float-icon{
+  width:39px;height:39px;border-radius:12px;
+  background:var(--mint);display:grid;place-items:center;font-size:1.2rem;
+  will-change:transform,background;
+}
+.float strong{display:block;font-size:.88rem}
+.float span{display:block;color:var(--muted);font-size:.74rem}
+
+.flow-dot{
+  position:absolute;left:0;top:0;width:14px;height:14px;border-radius:50%;
+  background:var(--sun);
+  box-shadow:0 0 0 5px rgba(206,17,38,.32),0 0 22px 6px rgba(206,17,38,.55);
+  z-index:4;opacity:0;pointer-events:none;
+  will-change:transform,opacity;
+}
+
+/* BANDE DÉFILANTE */
+.strip{background:var(--sun);color:#fff;overflow:hidden;white-space:nowrap;position:relative}
+.strip-track{display:inline-flex;flex-wrap:nowrap;padding:11px 0;will-change:transform}
+.strip-track > span{
+  display:inline-block;flex:0 0 auto;
+  font:800 1rem/1 var(--display);padding:0 20px;color:#fff;
+  letter-spacing:.01em;
+}
+
+/* SECTIONS */
+section{padding:95px 0}
+.kicker{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.13em;color:var(--green);margin-bottom:8px}
+h2{font:800 clamp(2.2rem,5vw,4rem)/.98 var(--display);letter-spacing:-.04em;margin:0 0 12px}
+.lead{color:var(--muted);max-width:620px;margin:0 0 42px;font-size:1.04rem}
+
+/* CATEGORIES */
+.category-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.category{
+  position:relative;overflow:hidden;min-height:145px;border:1px solid var(--line);
+  background:var(--card);border-radius:22px;padding:22px;text-decoration:none;
+  box-shadow:0 8px 25px rgba(4,40,29,.04);transition:.3s ease;
+  cursor:pointer;
+}
+.category:after{
+  content:"";position:absolute;width:90px;height:90px;right:-25px;bottom:-25px;
+  border-radius:50%;background:var(--mint);transition:.3s ease
+}
+.category:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:#B9D8CA}
+.category:hover:after{transform:scale(1.35)}
+.category .emoji{font-size:2rem;display:block;margin-bottom:22px;position:relative;z-index:1}
+.category strong{position:relative;z-index:1;font:800 1.25rem var(--display)}
+.category span{display:block;position:relative;z-index:1;color:var(--muted);font-size:.86rem}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:step}
+.step{
+  position:relative;padding:28px;border:1px solid var(--line);border-radius:24px;
+  background:var(--card);box-shadow:0 10px 30px rgba(4,40,29,.04);
+  counter-increment:step;transition:.3s ease
+}
+.step:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.step:before{
+  content:"0" counter(step);display:flex;align-items:center;justify-content:center;
+  width:54px;height:54px;border-radius:16px;background:var(--green);color:#fff;
+  font:800 1.1rem var(--display);margin-bottom:28px
+}
+.step h3{margin:0 0 7px;font:800 1.35rem var(--display)}
+.step p{margin:0;color:var(--muted)}
+
+/* ============================================================
+   SECTION ARTICLES PUBLIÉS
+   ============================================================ */
+.listings-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:18px;
+  margin-top:8px;
+}
+.listing-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  transition:.25s;
+  cursor:pointer;
+}
+.listing-card:hover{
+  border-color:#C8DED5;
+  transform:translateY(-3px);
+  box-shadow:var(--shadow);
+}
+.listing-card-img{
+  width:100%;
+  aspect-ratio: 3 / 4;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+  background:var(--mint-2);
+  display:block;
+}
+.listing-card-body{padding:14px}
+.listing-card-body h3{
+  margin:0 0 6px;
+  font:800 .95rem var(--display);
+  color:var(--ink);
+  letter-spacing:-.01em;
+  line-height:1.3;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+}
+.listing-card-price{
+  font:800 1.25rem var(--display);
+  color:var(--green);
+  letter-spacing:-.02em;
+  margin:0 0 6px;
+}
+.listing-card-meta{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:var(--muted);
+  font-size:.76rem;
+  flex-wrap:wrap;
+}
+.listing-card-meta .badge{
+  background:var(--mint-2);
+  color:var(--green);
+  padding:2px 8px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:.7rem;
+}
+
+/* Empty state */
+.listings-empty{
+  padding:50px 20px;
+  text-align:center;
+  color:var(--muted);
+  background:var(--card);
+  border:1px dashed var(--line);
+  border-radius:22px;
+}
+.listings-empty-icon{
+  width:64px;height:64px;
+  margin:0 auto 16px;
+  border-radius:18px;
+  background:var(--mint-2);
+  display:grid;place-items:center;
+  color:var(--green);
+  opacity:.8;
+}
+.listings-empty h3{
+  margin:0 0 6px;
+  font:800 1.15rem var(--display);
+  color:var(--ink);
+}
+.listings-empty p{
+  margin:0 0 20px;
+  font-size:.92rem;
+}
+
+/* TRUST */
+.trust{background:var(--green);color:#fff;position:relative;overflow:hidden}
+.trust:before{
+  content:"";position:absolute;width:450px;height:450px;right:-160px;top:-210px;
+  border-radius:50%;border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 0 0 70px rgba(255,255,255,.025),0 0 0 140px rgba(255,255,255,.02)
+}
+.trust h2{color:#fff}
+.trust .lead{color:#CDE4DA}
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.trust-card{
+  padding:28px;border-radius:24px;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.10);transition:.3s
+}
+.trust-card:hover{background:rgba(255,255,255,.11);transform:translateY(-4px)}
+.trust-card .icon{font-size:1.7rem;margin-bottom:18px}
+.trust-card h3{margin:0 0 6px;color:#FF8B95;font:800 1.25rem var(--display)}
+.trust-card p{margin:0;color:#D3E8DF}
+
+/* FINAL CTA */
+.final{text-align:center;padding:110px 0}
+.final-box{
+  position:relative;overflow:hidden;background:var(--mint);border-radius:34px;
+  padding:72px 25px;border:1px solid #C0E5D2
+}
+.final-box:before,.final-box:after{
+  content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.45)
+}
+.final-box:before{width:220px;height:220px;left:-90px;top:-100px}
+.final-box:after{width:300px;height:300px;right:-140px;bottom:-180px}
+.final h2{position:relative;z-index:1}
+.final p{position:relative;z-index:1;margin:0 auto 25px}
+.final .btn{position:relative;z-index:1;background:var(--green);color:#fff;font-size:1rem}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-size:.88rem}
+footer .wrap{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr}
+  .visual{max-width:680px;width:100%;margin:auto}
+  .category-row{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:720px){
+  .wrap{padding:0 17px}
+  nav{padding:17px 0}
+  .links a:not(.btn){display:none}
+  .hero{padding:18px 0 75px}
+  .hero h1{
+    font-size:clamp(1.4rem,5.5vw,2rem);
+    padding:20px 24px;border-radius:22px;line-height:1.08;
+  }
+  .hero-copy{font-size:1.02rem}
+  .cta-card{flex-direction:column;align-items:flex-start;gap:14px;padding:16px 18px}
+  .cta-card .btn{width:100%}
+  .visual{min-height:390px}
+  .video-card{left:0}
+  .float-b{right:-5px}
+  section{padding:70px 0}
+  .steps,.trust-grid{grid-template-columns:1fr}
+  .category-row{grid-template-columns:repeat(2,1fr)}
+  .listings-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .listing-card-body{padding:10px}
+  .listing-card-body h3{font-size:.85rem}
+  .listing-card-price{font-size:1.05rem}
+  .listing-card-meta{font-size:.7rem}
+}
+@media(max-width:470px){
+  .search{display:block;background:transparent;padding:0;box-shadow:none}
+  .search input{width:100%;background:#fff;border-radius:14px;padding:14px;margin-bottom:8px}
+  .search button{width:100%}
+  .category-row{grid-template-columns:1fr}
+  .visual{min-height:340px}
+  .video-card{border-radius:23px}
+  .float-a{left:-5px;top:25px}
+  .float-b{right:-5px;bottom:25px}
+  .hero h1{
+    font-size:clamp(1.2rem,5.8vw,1.6rem);
+    padding:16px 20px;border-radius:18px;
+  }
+  .hero-copy{font-size:.96rem}
+  .cta-card p{font-size:.98rem}
+  .float{padding:10px 12px}
+  .float-icon{width:34px;height:34px;font-size:1rem}
+  .float strong{font-size:.82rem}
+  .float span{font-size:.7rem}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .hero h1::before,
+  .video-card img{animation:none!important}
+  .hero h1 span{animation:rise .01s linear both!important}
+}
+</style>
 </head>
+
 <body>
-  <script>
-    // Si connecté → dashboard, sinon → login
-    var token = localStorage.getItem('trato_token');
-    if (token){
-      window.location.replace('/dashboard.html');
-    } else {
-      window.location.replace('/login.html');
+
+<!-- Client API -->
+<script src="/assets/api.js"></script>
+
+<!-- Adaptation selon connexion -->
+<script>
+(function(){
+  document.addEventListener('DOMContentLoaded', function(){
+    var isLogged = (typeof API !== 'undefined') && API.isLoggedIn();
+    var user = isLogged ? API.getUser() : null;
+    
+    // Bouton "Compte" dans le header
+    var accountBtn = document.getElementById('accountBtn');
+    if (accountBtn){
+      if (isLogged && user){
+        accountBtn.textContent = (user.name || 'Mi cuenta').split(' ')[0];
+        accountBtn.href = '/dashboard.html';
+      } else {
+        accountBtn.textContent = 'Crear cuenta';
+        accountBtn.href = '/login.html';
+      }
     }
-  </script>
-  <noscript>
-    <p>Redirigiendo… <a href="/login.html">Haz clic aquí si no funciona</a></p>
-  </noscript>
+    
+    // CTA principal
+    var ctaBtn = document.getElementById('ctaBtn');
+    if (ctaBtn){
+      ctaBtn.href = isLogged ? '/dashboard.html#publicar' : '/login.html';
+      ctaBtn.textContent = isLogged ? 'Publicar un artículo →' : 'Empezar ahora →';
+    }
+    
+    // Bouton "Explorar"
+    var exploreBtn = document.getElementById('exploreBtn');
+    if (exploreBtn){
+      exploreBtn.href = isLogged ? '/dashboard.html#articulos' : '#listings';
+    }
+  });
+})();
+</script>
+
+<header>
+  <div class="wrap">
+    <nav aria-label="Principal">
+      <a class="logo" href="#">TRATO<span>.</span></a>
+      <div class="links">
+        <a href="#categorias">Categorías</a>
+        <a href="#listings">Explorar</a>
+        <a id="accountBtn" class="btn" href="/login.html">Crear cuenta</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-grid">
+        <div>
+          <form class="search" onsubmit="return false">
+            <input id="searchInput" type="search" placeholder="¿Qué estás buscando? Ej. laptop, tenis..." aria-label="Buscar artículos">
+            <button type="submit" onclick="scrollToListings()">Buscar</button>
+          </form>
+
+          <h1>
+            <span>COMPRA.</span>
+            <span>VENDE.</span>
+            <span>HAZ TRATO.</span>
+          </h1>
+
+          <p class="hero-copy">
+            <span class="highlight">Gana dinero</span>, vendiendo las cosas que ya no usas.
+            Solo publica una foto del artículo que quieres vender y las personas cercanas a ti
+            te contactarán para comprar tus artículos. Es simple, rápido y seguro.
+          </p>
+
+          <div class="cta-card">
+            <p>Es el momento de <span class="highlight">ganar dinero</span>.</p>
+            <a id="ctaBtn" class="btn" href="/login.html">Empezar ahora →</a>
+          </div>
+        </div>
+
+        <div class="visual" aria-label="Jóvenes conectando y compartiendo">
+          <div class="video-card">
+            <img
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80"
+              alt="Jóvenes conectando y compartiendo en un marketplace local"
+              loading="eager"
+            >
+            <div class="video-overlay"></div>
+          </div>
+
+          <div class="floating float-a">
+            <div class="float-row">
+              <div class="float-icon">🛍️</div>
+              <div><strong>Nuevo artículo</strong><span>Laptop · $7,800 MXN</span></div>
+            </div>
+          </div>
+
+          <div class="floating float-b">
+            <div class="float-row">
+              <div class="float-icon">✓</div>
+              <div><strong>Trato realizado</strong><span>Guadalajara · Hace 2 min</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip" id="strip" aria-hidden="true">
+    <div class="strip-track" id="stripTrack">
+      <span>COMPRA. VENDE. HAZ TRATO. ★</span>
+      <span>COMPRA. VENDE. HAZ TRATO. ★</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- CATÉGORIES -->
+  <section id="categorias">
+    <div class="wrap">
+      <div class="kicker">Explora</div>
+      <h2>Encuentra algo que te guste.</h2>
+      <p class="lead">Categorías rápidas para llegar a lo que buscas sin perder tiempo.</p>
+
+      <div class="category-row">
+        <a class="category" href="#listings" data-category="libros">
+          <span class="emoji">📚</span><strong>Libros</strong><span>Estudio y lectura</span>
+        </a>
+        <a class="category" href="#listings" data-category="tech">
+          <span class="emoji">💻</span><strong>Tecnología</strong><span>Equipos y accesorios</span>
+        </a>
+        <a class="category" href="#listings" data-category="ropa">
+          <span class="emoji">👟</span><strong>Moda</strong><span>Ropa y calzado</span>
+        </a>
+        <a class="category" href="#listings" data-category="hogar">
+          <span class="emoji">🪑</span><strong>Hogar</strong><span>Para tu espacio</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section id="como" style="padding-top:15px">
+    <div class="wrap">
+      <div class="kicker">Así funciona</div>
+      <h2>Tres pasos. Un buen trato.</h2>
+      <p class="lead">Publica, conecta y acuerda. TRATO mantiene el proceso sencillo.</p>
+
+      <div class="steps">
+        <article class="step">
+          <h3>Publica</h3>
+          <p>Toma una foto, define el precio y agrega los detalles de tu artículo.</p>
+        </article>
+        <article class="step">
+          <h3>Conecta</h3>
+          <p>Habla con compradores o vendedores y acuerda todos los detalles.</p>
+        </article>
+        <article class="step">
+          <h3>Haz trato</h3>
+          <p>Encuéntrense en un lugar adecuado, revisa el artículo y completa la compra.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✅ NOUVELLE SECTION : ARTICLES PUBLIÉS -->
+  <section id="listings">
+    <div class="wrap">
+      <div class="kicker">Marketplace</div>
+      <h2>Lo que se vende hoy.</h2>
+      <p class="lead">Artículos publicados por la comunidad de TRATO.</p>
+
+      <div id="listingsGrid" class="listings-grid" style="display:none;"></div>
+
+      <div id="listingsEmpty" class="listings-empty">
+        <div class="listings-empty-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m7.5 4.27 9 5.15"/>
+            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+            <path d="M12 22V12"/>
+          </svg>
+        </div>
+        <h3>Aún no hay artículos publicados</h3>
+        <p>Sé el primero en publicar algo y empieza a ganar dinero hoy mismo.</p>
+        <a id="emptyCta" class="btn" href="/login.html" style="background:var(--green)">
+          Publicar mi primer artículo
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="trust">
+    <div class="wrap">
+      <div class="kicker" style="color:#FF8B95">Confianza</div>
+      <h2>Hecho para comprar mejor.</h2>
+      <p class="lead">La experiencia debe sentirse rápida, clara y humana.</p>
+
+      <div class="trust-grid">
+        <div class="trust-card"><div class="icon">🤝</div><h3>Tratos directos</h3><p>Conecta directamente con la persona que compra o vende.</p></div>
+        <div class="trust-card"><div class="icon">💰</div><h3>Precios claros</h3><p>El precio aparece desde el principio. Sin sorpresas.</p></div>
+        <div class="trust-card"><div class="icon">📍</div><h3>Compra local</h3><p>Acuerda el punto de encuentro y haz el trato de forma sencilla.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="final">
+    <div class="wrap">
+      <div class="final-box">
+        <div class="kicker">Únete a TRATO</div>
+        <h2>¿Listo para hacer trato?</h2>
+        <p class="lead">Crea tu cuenta gratis y publica tu primer artículo hoy.</p>
+        <a id="finalCta" class="btn" href="/login.html">Crear cuenta gratis →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 TRATO. Hecho en México.</span>
+    <span>Marketplace mexicano · Compra local · Vende fácil</span>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   1. BANDE DÉFILANTE
+   ============================================================ */
+(function(){
+  var strip = document.getElementById('strip');
+  var track = document.getElementById('stripTrack');
+  if (!strip || !track) return;
+
+  var originalHTML = track.innerHTML;
+  var copies = 0;
+
+  function fill(){
+    track.innerHTML = originalHTML;
+    copies = 1;
+    var guard = 0;
+    while (track.scrollWidth < strip.clientWidth * 2 && guard < 60){
+      track.innerHTML += originalHTML;
+      copies++;
+      guard++;
+    }
+  }
+
+  fill();
+  window.addEventListener('resize', fill);
+
+  var x = 0;
+  var last = performance.now();
+  var SPEED = 55;
+
+  function tick(now){
+    var dt = Math.min(now - last, 60) / 1000;
+    last = now;
+    x -= SPEED * dt;
+    var cw = track.scrollWidth / copies;
+    if (cw > 0 && x <= -cw) x += cw;
+    track.style.transform = 'translate3d(' + x + 'px,0,0)';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+
+/* ============================================================
+   2. CHARGER LES ARTICLES PUBLIÉS
+   ============================================================ */
+function extractImageUrls(images){
+  if (!images) return [];
+  if (typeof images === "string"){
+    try {
+      var parsed = JSON.parse(images);
+      if (typeof parsed === "string"){
+        try { parsed = JSON.parse(parsed); } catch (e){}
+      }
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e){ return []; }
+  }
+  if (Array.isArray(images)){
+    if (images.length === 1 && typeof images[0] === "string" && images[0].startsWith("[")){
+      try {
+        var inner = JSON.parse(images[0]);
+        return Array.isArray(inner) ? inner : [];
+      } catch (e){}
+    }
+    return images;
+  }
+  return [];
+}
+
+function escapeHtml(str){
+  if (!str) return "";
+  return String(str).replace(/[&<>"']/g, function(c){
+    return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+  });
+}
+
+async function loadListings(){
+  var grid = document.getElementById('listingsGrid');
+  var empty = document.getElementById('listingsEmpty');
+  if (!grid || !empty) return;
+
+  try {
+    var res = await fetch('/api/listings');
+    var data = await res.json();
+    var listings = data.listings || [];
+
+    // Adapter les boutons si connecté
+    var isLogged = (typeof API !== 'undefined') && API.isLoggedIn();
+    var emptyCta = document.getElementById('emptyCta');
+    if (emptyCta){
+      emptyCta.href = isLogged ? '/dashboard.html#publicar' : '/login.html';
+    }
+
+    if (listings.length === 0){
+      empty.style.display = "block";
+      grid.style.display = "none";
+      return;
+    }
+
+    empty.style.display = "none";
+    grid.style.display = "grid";
+    grid.innerHTML = "";
+
+    // Afficher seulement les 8 premiers
+    listings.slice(0, 8).forEach(function(item){
+      var urls = extractImageUrls(item.images);
+      var imgUrl = urls.length > 0 ? urls[0] : "";
+      var price = parseFloat(item.price).toLocaleString("es-MX");
+
+      var card = document.createElement("div");
+      card.className = "listing-card";
+      card.innerHTML =
+        (imgUrl ? '<img class="listing-card-img" src="' + imgUrl + '" alt="">' : '') +
+        '<div class="listing-card-body">' +
+          '<h3>' + escapeHtml(item.title) + '</h3>' +
+          '<p class="listing-card-price">$' + price + ' MXN</p>' +
+          '<div class="listing-card-meta">' +
+            (item.category ? '<span class="badge">' + escapeHtml(item.category) + '</span>' : '') +
+            '<span>📍 ' + escapeHtml(item.city || "") + '</span>' +
+          '</div>' +
+        '</div>';
+
+      card.addEventListener('click', function(){
+        if (isLogged){
+          window.location.href = '/dashboard.html#articulos';
+        } else {
+          window.location.href = '/login.html';
+        }
+      });
+
+      grid.appendChild(card);
+    });
+
+  } catch (err){
+    console.error("loadListings:", err);
+    empty.style.display = "block";
+    grid.style.display = "none";
+  }
+}
+
+/* ============================================================
+   3. SCROLL VERS LES ARTICLES
+   ============================================================ */
+function scrollToListings(){
+  var el = document.getElementById('listings');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ============================================================
+   4. FILTRER PAR CATÉGORIE (scroll vers articles)
+   ============================================================ */
+document.querySelectorAll('.category').forEach(function(cat){
+  cat.addEventListener('click', function(e){
+    e.preventDefault();
+    scrollToListings();
+  });
+});
+
+/* ============================================================
+   5. ADAPTER LES CTA SELON CONNEXION
+   ============================================================ */
+(function(){
+  function adaptCTAs(){
+    var isLogged = (typeof API !== 'undefined') && API.isLoggedIn();
+    var user = isLogged ? API.getUser() : null;
+
+    var accountBtn = document.getElementById('accountBtn');
+    if (accountBtn){
+      if (isLogged && user){
+        accountBtn.textContent = (user.name || 'Mi cuenta').split(' ')[0];
+        accountBtn.href = '/dashboard.html';
+      } else {
+        accountBtn.textContent = 'Crear cuenta';
+        accountBtn.href = '/login.html';
+      }
+    }
+
+    var ctaBtn = document.getElementById('ctaBtn');
+    if (ctaBtn){
+      ctaBtn.href = isLogged ? '/dashboard.html#publicar' : '/login.html';
+      ctaBtn.textContent = isLogged ? 'Publicar un artículo →' : 'Empezar ahora →';
+    }
+
+    var emptyCta = document.getElementById('emptyCta');
+    if (emptyCta){
+      emptyCta.href = isLogged ? '/dashboard.html#publicar' : '/login.html';
+    }
+
+    var finalCta = document.getElementById('finalCta');
+    if (finalCta){
+      finalCta.href = isLogged ? '/dashboard.html' : '/login.html';
+      finalCta.textContent = isLogged ? 'Ir a mi cuenta →' : 'Crear cuenta gratis →';
+    }
+  }
+
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', adaptCTAs);
+  } else {
+    adaptCTAs();
+  }
+})();
+
+/* ============================================================
+   6. INIT
+   ============================================================ */
+window.addEventListener('load', loadListings);
+</script>
+
 </body>
 </html>
